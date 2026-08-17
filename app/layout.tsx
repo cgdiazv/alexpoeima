@@ -26,12 +26,25 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   let currency = "USD";
+  let pricesIncludeTax = true; // Prado merchant setting: Prices include tax (checked)
+  let taxRate = 0.15; // Prado merchant setting: 15% ISV
+  let taxName = "Impuesto sobre Ventas (ISV)";
+
   try {
     const storeId = process.env.NEXT_PUBLIC_PRADO_STORE_ID;
     if (storeId) {
       const store = await pradoClient(`/api/stores/${storeId}`);
       if (store?.currency) {
         currency = store.currency;
+      }
+      if (typeof store?.pricesIncludeTax === "boolean") {
+        pricesIncludeTax = store.pricesIncludeTax;
+      }
+      if (typeof store?.taxRate === "number") {
+        taxRate = store.taxRate;
+      }
+      if (store?.taxName) {
+        taxName = store.taxName;
       }
     }
   } catch (error) {
@@ -45,7 +58,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <CartProvider currency={currency}>
+        <CartProvider
+          currency={currency}
+          pricesIncludeTax={pricesIncludeTax}
+          taxRate={taxRate}
+          taxName={taxName}
+        >
           <Navbar />
           <CartDrawer />
           {children}

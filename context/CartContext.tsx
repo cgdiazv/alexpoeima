@@ -19,6 +19,9 @@ type CartContextType = {
   totalPrice: number;
   totalItems: number;
   currency: string;
+  pricesIncludeTax: boolean;
+  taxRate: number;
+  taxName: string;
   isOpen: boolean;
   openCart: () => void;
   closeCart: () => void;
@@ -27,7 +30,19 @@ type CartContextType = {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export function CartProvider({ children, currency }: { children: ReactNode; currency: string }) {
+export function CartProvider({
+  children,
+  currency,
+  pricesIncludeTax = true,
+  taxRate = 0.15,
+  taxName = "Impuesto sobre Ventas (ISV)",
+}: {
+  children: ReactNode;
+  currency: string;
+  pricesIncludeTax?: boolean;
+  taxRate?: number;
+  taxName?: string;
+}) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -105,6 +120,9 @@ export function CartProvider({ children, currency }: { children: ReactNode; curr
         totalPrice,
         totalItems,
         currency,
+        pricesIncludeTax,
+        taxRate,
+        taxName,
         isOpen,
         openCart,
         closeCart,

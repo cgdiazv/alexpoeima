@@ -69,7 +69,7 @@ const REGIONS_BY_COUNTRY: Record<string, string[]> = {
 };
 
 export default function CheckoutPage() {
-  const { items, totalPrice, clearCart, currency } = useCart();
+  const { items, totalPrice, clearCart, currency, pricesIncludeTax, taxRate, taxName } = useCart();
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState<UserProfile | null>(null);
   const router = useRouter();
@@ -223,8 +223,13 @@ export default function CheckoutPage() {
 
   const selectedMethod = shippingMethods.find((m) => (m.id || m.name) === selectedShippingId) || shippingMethods[0];
   const finalShippingCost = selectedMethod ? Number(selectedMethod.price || 0) : 5.00;
-  const salesTax = (totalPrice - discountAmount) * 0.0825;
-  const finalTotal = Math.max(0, totalPrice - discountAmount + finalShippingCost + salesTax);
+  const taxableAmount = Math.max(0, totalPrice - discountAmount);
+
+  // Respect merchant Prado Commerce tax configuration
+  const rate = taxRate ?? 0.15; // 15% ISV (Impuesto sobre Ventas)
+  const salesTax = pricesIncludeTax ? 0 : taxableAmount * rate;
+  const includedTax = pricesIncludeTax ? (taxableAmount * rate) / (1 + rate) : 0;
+  const finalTotal = Math.max(0, taxableAmount + finalShippingCost + salesTax);
 
   const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -823,8 +828,12 @@ export default function CheckoutPage() {
               </div>
 
               <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
-                <span>Sales Tax</span>
-                <span className="font-semibold text-zinc-900 dark:text-white">{formatCurrency(salesTax, currency)}</span>
+                <span>{taxName || "Tax"} {pricesIncludeTax ? "(Included)" : ""}</span>
+                <span className="font-semibold text-zinc-900 dark:text-white">
+                  {pricesIncludeTax
+                    ? formatCurrency(includedTax, currency)
+                    : formatCurrency(salesTax, currency)}
+                </span>
               </div>
 
               <div className="border-t border-zinc-200 dark:border-zinc-800 pt-4 flex justify-between items-center text-lg font-bold text-zinc-900 dark:text-white">
