@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Lock, CreditCard, Truck } from "lucide-react";
+import { formatCurrency } from "@/lib/currency";
 
 interface UserProfile {
   email: string;
@@ -631,7 +632,7 @@ export default function CheckoutPage() {
               >
                 {shippingMethods.map((method) => {
                   const key = method.id || method.name;
-                  const priceText = Number(method.price) === 0 ? "Free" : `$${Number(method.price).toFixed(2)}`;
+                  const priceText = Number(method.price) === 0 ? "Free" : formatCurrency(Number(method.price), currency);
                   return (
                     <option key={key} value={key}>
                       {method.name} ({priceText}) {method.description ? `- ${method.description}` : ""}
@@ -794,7 +795,7 @@ export default function CheckoutPage() {
                     </div>
                   </div>
                   <span className="font-semibold text-zinc-900 dark:text-white">
-                    ${(item.price * item.quantity).toFixed(2)}
+                    {formatCurrency(item.price * item.quantity, currency)}
                   </span>
                 </div>
               ))}
@@ -804,31 +805,31 @@ export default function CheckoutPage() {
             <div className="border-t border-zinc-200 dark:border-zinc-800 pt-4 space-y-3 text-sm">
               <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
                 <span>Subtotal</span>
-                <span className="font-semibold text-zinc-900 dark:text-white">${totalPrice.toFixed(2)}</span>
+                <span className="font-semibold text-zinc-900 dark:text-white">{formatCurrency(totalPrice, currency)}</span>
               </div>
 
               {couponApplied && (
                 <div className="flex justify-between text-green-600 dark:text-green-400">
                   <span>Coupon Discount</span>
-                  <span className="font-semibold">-${discountAmount.toFixed(2)}</span>
+                  <span className="font-semibold">-{formatCurrency(discountAmount, currency)}</span>
                 </div>
               )}
 
               <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
                 <span>Shipping ({selectedMethod?.name || "Standard"})</span>
                 <span className="font-semibold text-zinc-900 dark:text-white">
-                  {finalShippingCost === 0 ? "Free" : `$${finalShippingCost.toFixed(2)}`}
+                  {finalShippingCost === 0 ? "Free" : formatCurrency(finalShippingCost, currency)}
                 </span>
               </div>
 
               <div className="flex justify-between text-zinc-600 dark:text-zinc-400">
                 <span>Sales Tax</span>
-                <span className="font-semibold text-zinc-900 dark:text-white">${salesTax.toFixed(2)}</span>
+                <span className="font-semibold text-zinc-900 dark:text-white">{formatCurrency(salesTax, currency)}</span>
               </div>
 
               <div className="border-t border-zinc-200 dark:border-zinc-800 pt-4 flex justify-between items-center text-lg font-bold text-zinc-900 dark:text-white">
                 <span>Total</span>
-                <span className="text-xl">${finalTotal.toFixed(2)}</span>
+                <span className="text-xl">{formatCurrency(finalTotal, currency)}</span>
               </div>
             </div>
           </div>

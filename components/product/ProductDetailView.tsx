@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import { formatCurrency } from "@/lib/currency";
 
 type Variant = {
   id?: string;
@@ -109,7 +110,7 @@ export function ProductDetailView({
               {product.title}
             </h1>
             <p className="text-2xl font-bold text-zinc-900 dark:text-white mt-4">
-              {priceNum.toFixed(2)} {currency.toUpperCase()}
+              {formatCurrency(priceNum, currency)}
             </p>
           </div>
 

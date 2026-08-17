@@ -19,8 +19,8 @@ export async function generateMetadata({
 
     if (product) {
       return {
-        title: `${product.title} | Alex Poeima`,
-        description: product.description || `View ${product.title} on Alex Poeima`,
+        title: product.title,
+        description: product.description || `View ${product.title} on Alexpoeima Art`,
       };
     }
   } catch (error) {
@@ -28,7 +28,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: "Product Detail | Alex Poeima",
+    title: "Product Detail",
   };
 }
 

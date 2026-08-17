@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
+import { formatCurrency } from "@/lib/currency";
 
 type ProductCardProps = {
   product: {
@@ -49,7 +50,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </h3>
         <div className="flex flex-1 flex-col justify-end mt-2">
           <p className="text-base font-medium text-gray-900 dark:text-white">
-            {displayPrice.toFixed(2)} {currency.toUpperCase()}
+            {formatCurrency(displayPrice, currency)}
           </p>
         </div>
       </div>

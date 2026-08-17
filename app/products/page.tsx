@@ -5,8 +5,8 @@ import { Metadata } from "next";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Products | Alex Poeima",
-  description: "Browse all art pieces and fine prints by Alex Poeima.",
+  title: "Products",
+  description: "Browse all art pieces and fine prints by Alexpoeima Art.",
 };
 
 export default async function ProductsPage() {

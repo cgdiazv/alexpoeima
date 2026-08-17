@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { ShoppingBag, X, Plus, Minus, Trash2 } from "lucide-react";
+import { formatCurrency } from "@/lib/currency";
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalPrice, currency, totalItems } = useCart();
@@ -86,7 +87,7 @@ export function CartDrawer() {
                         <div className="flex justify-between text-base font-medium text-zinc-900 dark:text-white">
                           <h3 className="line-clamp-1">{item.name}</h3>
                           <p className="ml-2 font-semibold">
-                            {(item.price * item.quantity).toFixed(2)} {currency.toUpperCase()}
+                            {formatCurrency(item.price * item.quantity, currency)}
                           </p>
                         </div>
                       </div>
@@ -133,7 +134,7 @@ export function CartDrawer() {
             <div className="p-6 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 space-y-4">
               <div className="flex justify-between text-base font-bold text-zinc-900 dark:text-white">
                 <p>Subtotal</p>
-                <p>{totalPrice.toFixed(2)} {currency.toUpperCase()}</p>
+                <p>{formatCurrency(totalPrice, currency)}</p>
               </div>
               <p className="text-xs text-zinc-500 dark:text-zinc-400">
                 Shipping and taxes calculated at checkout.

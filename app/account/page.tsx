@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { formatCurrency } from "@/lib/currency";
 
 interface UserProfile {
   email: string;
@@ -128,7 +129,7 @@ export default function AccountPage() {
                   </div>
                   <div className="flex items-center gap-4">
                     <span className="text-sm font-semibold text-zinc-900 dark:text-white">
-                      ${order.total ? order.total.toFixed(2) : "0.00"}
+                      {formatCurrency(order.total || 0, (order as any).currency || "USD")}
                     </span>
                     <span className="capitalize text-xs font-medium px-2.5 py-1 rounded-full bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300">
                       {order.status || "Completed"}

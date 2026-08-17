@@ -19,6 +19,7 @@ export const pradoClient = async (endpoint: string, options: RequestInit = {}) =
   url.searchParams.append('storeId', STORE_ID);
 
   const response = await fetch(url.toString(), {
+    next: { revalidate: 60 },
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -57,6 +58,7 @@ export const pradoAdmin = async (endpoint: string, options: RequestInit = {}) =>
   url.searchParams.append('storeId', STORE_ID);
 
   const response = await fetch(url.toString(), {
+    next: { revalidate: 60 },
     ...options,
     headers: {
       'Content-Type': 'application/json',
