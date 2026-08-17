@@ -95,9 +95,6 @@ export default function AccountPage() {
             <h2 className="text-xl font-bold text-zinc-900 dark:text-white">
               Order History
             </h2>
-            <span className="text-xs font-semibold px-2.5 py-1 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
-              Prado Commerce
-            </span>
           </div>
 
           {orders.length === 0 ? (

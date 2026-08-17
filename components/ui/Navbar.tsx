@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
+import { ShoppingBag, User } from "lucide-react";
 
 export function Navbar() {
   const { totalItems, openCart } = useCart();
@@ -37,10 +38,10 @@ export function Navbar() {
             />
           </Link>
           <div className="hidden space-x-6 md:flex">
-            <Link href="/" className="text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white">
+            <Link href="/" className="text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors">
               Home
             </Link>
-            <Link href="/products" className="text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white">
+            <Link href="/products" className="text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors">
               Products
             </Link>
           </div>
@@ -48,24 +49,19 @@ export function Navbar() {
 
         <div className="flex items-center space-x-6">
           {loggedIn ? (
-            <Link href="/account" className="text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white">
-              Account
+            <Link href="/account" className="flex items-center space-x-1.5 text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors">
+              <User className="w-4 h-4" />
+              <span>Account</span>
             </Link>
           ) : (
-            <Link href="/login" className="text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white">
-              Login
+            <Link href="/login" className="flex items-center space-x-1.5 text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors">
+              <User className="w-4 h-4" />
+              <span>Login</span>
             </Link>
           )}
 
           <button onClick={openCart} className="relative group p-1" aria-label="Open cart">
-            <svg
-              className="h-6 w-6 text-gray-700 group-hover:text-black dark:text-gray-300 dark:group-hover:text-white transition-colors"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-            </svg>
+            <ShoppingBag className="w-6 h-6 text-gray-700 group-hover:text-black dark:text-gray-300 dark:group-hover:text-white transition-colors" />
             {totalItems > 0 && (
               <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-black text-xs font-bold text-white dark:bg-white dark:text-black">
                 {totalItems}

@@ -4,6 +4,7 @@ import { useCart } from "@/context/CartContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
+import { ShoppingBag, X, Plus, Minus, Trash2 } from "lucide-react";
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalPrice, currency, totalItems } = useCart();
@@ -37,7 +38,8 @@ export function CartDrawer() {
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-zinc-200 dark:border-zinc-800">
             <h2 className="text-lg font-bold text-zinc-900 dark:text-white flex items-center gap-2">
-              Shopping Cart
+              <ShoppingBag className="w-5 h-5" />
+              <span>Shopping Cart</span>
               {totalItems > 0 && (
                 <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
                   {totalItems} {totalItems === 1 ? "item" : "items"}
@@ -47,10 +49,9 @@ export function CartDrawer() {
             <button
               onClick={closeCart}
               className="p-2 text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white transition-colors"
+              aria-label="Close cart"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              <X className="w-5 h-5" />
             </button>
           </div>
 
@@ -58,9 +59,7 @@ export function CartDrawer() {
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {items.length === 0 ? (
               <div className="text-center py-16 flex flex-col items-center justify-center">
-                <svg className="w-16 h-16 text-zinc-300 dark:text-zinc-700 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                </svg>
+                <ShoppingBag className="w-16 h-16 text-zinc-300 dark:text-zinc-700 mb-4" />
                 <p className="text-zinc-500 dark:text-zinc-400 font-medium mb-4">Your cart is currently empty.</p>
                 <button
                   onClick={closeCart}
@@ -95,28 +94,31 @@ export function CartDrawer() {
                       <div className="flex items-center justify-between text-sm mt-2">
                         <div className="flex items-center border border-zinc-300 dark:border-zinc-700 rounded-md">
                           <button
-                            className="px-2.5 py-0.5 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                            className="px-2 py-1 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                            aria-label="Decrease quantity"
                           >
-                            -
+                            <Minus className="w-3 h-3" />
                           </button>
                           <span className="px-3 py-0.5 font-medium text-zinc-900 dark:text-white text-xs">
                             {item.quantity}
                           </span>
                           <button
-                            className="px-2.5 py-0.5 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                            className="px-2 py-1 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
                             onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                            aria-label="Increase quantity"
                           >
-                            +
+                            <Plus className="w-3 h-3" />
                           </button>
                         </div>
 
                         <button
                           type="button"
-                          className="font-medium text-xs text-red-600 hover:text-red-500 transition-colors"
+                          className="flex items-center text-xs text-red-600 hover:text-red-500 transition-colors gap-1"
                           onClick={() => removeItem(item.id)}
                         >
-                          Remove
+                          <Trash2 className="w-3.5 h-3.5" />
+                          <span>Remove</span>
                         </button>
                       </div>
                     </div>
