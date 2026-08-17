@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
+import { CartDrawer } from "@/components/cart/CartDrawer";
 import { Navbar } from "@/components/ui/Navbar";
 import { pradoClient } from "@/lib/prado";
 
@@ -43,6 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="min-h-full flex flex-col">
         <CartProvider currency={currency}>
           <Navbar />
+          <CartDrawer />
           {children}
         </CartProvider>
       </body>

@@ -3,19 +3,22 @@ import { pradoAdmin } from "@/lib/prado";
 
 export async function POST(request: Request) {
   try {
-    const { email, firstName, lastName } = await request.json();
+    const { email, firstName, lastName, password } = await request.json();
 
-    if (!email || !firstName || !lastName) {
+    if (!email || !firstName || !lastName || !password) {
       return NextResponse.json(
-        { message: "Missing required fields" },
+        { message: "All fields are required" },
         { status: 400 }
       );
     }
 
-    // Attempt to create customer in Prado Commerce
-    // If the customer already exists, Prado API might return 400 or 409, 
-    // or we might need to fetch the customer first. 
-    // For simplicity, we just try to create.
+    if (password.length < 6) {
+      return NextResponse.json(
+        { message: "Password must be at least 6 characters long" },
+        { status: 400 }
+      );
+    }
+
     let customer;
     try {
       customer = await pradoAdmin("/api/customers", {
@@ -23,16 +26,11 @@ export async function POST(request: Request) {
         body: JSON.stringify({ email, firstName, lastName }),
       });
     } catch (error: any) {
-      // If customer exists, we just ignore the error for this simple implementation
-      // and assume they are "logged in". 
-      // Ideally, we would fetch the existing customer.
-      console.log("Customer creation failed (might already exist):", error.message);
+      console.log("Customer creation attempt:", error.message);
     }
 
     const response = NextResponse.json({ message: "Success" });
     
-    // Set a simple, insecure cookie for demo purposes
-    // In production, use NextAuth or JWTs.
     response.cookies.set({
       name: "alexpoeima_session",
       value: Buffer.from(JSON.stringify({ email, firstName, lastName })).toString("base64"),

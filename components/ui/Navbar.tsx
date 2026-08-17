@@ -1,11 +1,26 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 
 export function Navbar() {
-  const { totalItems } = useCart();
+  const { totalItems, openCart } = useCart();
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    async function checkAuth() {
+      try {
+        const res = await fetch("/api/auth/me");
+        const data = await res.json();
+        setLoggedIn(!!data.loggedIn);
+      } catch (err) {
+        setLoggedIn(false);
+      }
+    }
+    checkAuth();
+  }, []);
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-black/80">
@@ -32,10 +47,17 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center space-x-6">
-          <Link href="/login" className="text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white">
-            Login
-          </Link>
-          <Link href="/cart" className="relative group">
+          {loggedIn ? (
+            <Link href="/account" className="text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white">
+              Account
+            </Link>
+          ) : (
+            <Link href="/login" className="text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white">
+              Login
+            </Link>
+          )}
+
+          <button onClick={openCart} className="relative group p-1" aria-label="Open cart">
             <svg
               className="h-6 w-6 text-gray-700 group-hover:text-black dark:text-gray-300 dark:group-hover:text-white transition-colors"
               fill="none"
@@ -45,11 +67,11 @@ export function Navbar() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
             {totalItems > 0 && (
-              <span className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-black text-xs font-bold text-white dark:bg-white dark:text-black">
+              <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-black text-xs font-bold text-white dark:bg-white dark:text-black">
                 {totalItems}
               </span>
             )}
-          </Link>
+          </button>
         </div>
       </div>
     </nav>
