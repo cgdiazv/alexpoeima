@@ -4,6 +4,7 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { Navbar } from "@/components/ui/Navbar";
+import { Footer } from "@/components/ui/Footer";
 import { pradoClient } from "@/lib/prado";
 
 const geistSans = Geist({
@@ -67,6 +68,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <Navbar />
           <CartDrawer />
           {children}
+          <Footer />
         </CartProvider>
       </body>
     </html>
