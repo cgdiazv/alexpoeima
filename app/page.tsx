@@ -14,13 +14,15 @@ export default async function Home() {
   return (
     <main className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="bg-zinc-50 dark:bg-zinc-900 py-20 px-6 text-center">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50 mb-6">
-          Welcome to Alex Poeima
-        </h1>
-        <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto">
-          Discover exclusive art pieces, fine prints, and more.
-        </p>
+      <section className="relative overflow-hidden py-20 md:py-28 border-b border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-950">
+        <div className="mx-auto max-w-5xl px-6 text-center">
+          <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-6 leading-tight">
+            Welcome to Alex Poeima
+          </h1>
+          <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed">
+            Discover exclusive art pieces, fine prints, and more.
+          </p>
+        </div>
       </section>
 
       {/* Featured Products */}
