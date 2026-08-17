@@ -15,7 +15,10 @@ export const pradoClient = async (endpoint: string, options: RequestInit = {}) =
     throw new Error("Missing Prado Commerce public environment variables.");
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
+  const url = new URL(`${API_URL}${endpoint}`);
+  url.searchParams.append('storeId', STORE_ID);
+
+  const response = await fetch(url.toString(), {
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -50,7 +53,10 @@ export const pradoAdmin = async (endpoint: string, options: RequestInit = {}) =>
     throw new Error("Missing Prado Commerce secret environment variables.");
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
+  const url = new URL(`${API_URL}${endpoint}`);
+  url.searchParams.append('storeId', STORE_ID);
+
+  const response = await fetch(url.toString(), {
     ...options,
     headers: {
       'Content-Type': 'application/json',
