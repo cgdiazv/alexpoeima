@@ -1,10 +1,18 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export function Header() {
   return (
     <header className="border-b p-4 flex justify-between items-center">
-      <Link href="/" className="text-xl font-bold">
-        Storefront
+      <Link href="/" className="flex items-center">
+        <Image
+          src="/logo-script.webp"
+          alt="Alex Poeima"
+          width={180}
+          height={45}
+          className="h-8 w-auto object-contain dark:invert"
+          priority
+        />
       </Link>
       <nav>
         <ul className="flex gap-4">

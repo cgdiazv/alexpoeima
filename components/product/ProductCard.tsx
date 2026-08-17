@@ -34,22 +34,19 @@ export function ProductCard({ product }: ProductCardProps) {
       <Link href={`/products/${product.slug}`} className="absolute inset-0 z-10">
         <span className="sr-only">View {product.title}</span>
       </Link>
-      <div className="aspect-h-4 aspect-w-3 bg-gray-100 dark:bg-zinc-800 sm:aspect-none sm:h-64 flex items-center justify-center p-4">
+      <div className="relative w-full h-64 overflow-hidden bg-gray-100 dark:bg-zinc-800">
         <Image
           src={imageUrl}
           alt={product.title}
-          width={300}
-          height={300}
-          className="h-full w-full object-contain object-center sm:h-full sm:w-full transition-transform group-hover:scale-105"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
         />
       </div>
       <div className="flex flex-1 flex-col space-y-2 p-4">
         <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 line-clamp-1">
           {product.title}
         </h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
-          {product.description}
-        </p>
         <div className="flex flex-1 flex-col justify-end mt-2">
           <p className="text-base font-medium text-gray-900 dark:text-white">
             {displayPrice.toFixed(2)} {currency.toUpperCase()}
