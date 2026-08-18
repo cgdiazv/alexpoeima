@@ -55,8 +55,8 @@ export default function LoginPage() {
   };
 
   return (
-    <main className="flex flex-col items-center justify-center min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-black">
-      <div className="w-full max-w-md space-y-8 bg-white dark:bg-zinc-900 p-10 rounded-xl">
+    <main className="flex-1 flex flex-col items-center justify-start pt-6 sm:pt-10 pb-12 px-4 sm:px-6 lg:px-8 bg-zinc-50 dark:bg-zinc-950">
+      <div className="w-full max-w-md space-y-6 bg-white dark:bg-zinc-900 p-8 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm">
         
         {/* Toggle Mode Buttons */}
         <div className="flex border-b border-zinc-200 dark:border-zinc-800 mb-6">
