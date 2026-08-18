@@ -249,7 +249,7 @@ export default function CheckoutPage() {
 
   if (items.length === 0) {
     return (
-      <main className="container mx-auto p-6 min-h-screen text-center flex flex-col items-center justify-center">
+      <main className="w-full bg-white dark:bg-zinc-950 min-h-screen flex flex-col items-center justify-center p-6 text-center">
         <h1 className="text-2xl font-bold mb-4 text-zinc-900 dark:text-white">Your cart is empty</h1>
         <Link href="/products" className="text-sm font-medium underline text-zinc-900 dark:text-white">
           Browse products to add items
@@ -259,7 +259,8 @@ export default function CheckoutPage() {
   }
 
   return (
-    <main className="container mx-auto max-w-6xl p-4 sm:p-8 min-h-screen">
+    <main className="w-full bg-white dark:bg-zinc-950 min-h-screen">
+      <div className="container mx-auto max-w-6xl p-4 sm:p-8">
       <form onSubmit={handlePlaceOrder} className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         
         {/* LEFT COLUMN: Customer Information, Billing, Shipping & Payment */}
@@ -826,6 +827,7 @@ export default function CheckoutPage() {
         </div>
 
       </form>
-    </main>
+    </div>
+  </main>
   );
 }

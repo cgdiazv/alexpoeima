@@ -12,7 +12,7 @@ export default async function Home() {
   }
 
   return (
-    <main className="flex flex-col min-h-screen">
+    <main className="w-full bg-white dark:bg-zinc-950 flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 md:py-28 border-b border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-950">
         <div className="mx-auto max-w-5xl px-6 text-center">

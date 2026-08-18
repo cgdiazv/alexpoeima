@@ -55,7 +55,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-40 w-full border-b border-[#eae4d2] bg-[#fdfcf8]/90 backdrop-blur-md dark:border-zinc-800 dark:bg-[#12110c]/90">
+    <nav className="sticky top-0 z-40 w-full border-b border-zinc-200 bg-white/90 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/90">
       <div className="mx-auto flex max-w-7xl items-center justify-between p-4 sm:px-6 lg:px-8">
         <div className="flex items-center space-x-8">
           <Link href="/" className="flex items-center">
