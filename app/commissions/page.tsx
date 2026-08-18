@@ -67,7 +67,7 @@ export default function CommissionsPage() {
             Commission a Unique Masterpiece
           </h1>
           <p className="text-base md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed">
-            Collaborate directly with Alex Poeima to create a custom original oil or acrylic painting tailored specifically to your home, office, or private art collection.
+            Collaborate directly with Alexpoeima to create a custom original oil or acrylic painting tailored specifically to your home, office, or private art collection.
           </p>
         </div>
       </section>
@@ -151,7 +151,7 @@ export default function CommissionsPage() {
               <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto" />
               <h3 className="text-2xl font-bold">Commission Request Received!</h3>
               <p className="text-zinc-600 dark:text-zinc-400 max-w-md mx-auto">
-                Thank you for reaching out. Alex Poeima will review your request details and reply to <strong>{formData.email}</strong> within 1-2 business days.
+                Thank you for reaching out. Alexpoeima will review your request details and reply to <strong>{formData.email}</strong> within 1-2 business days.
               </p>
               <button
                 onClick={() => setSubmitted(false)}

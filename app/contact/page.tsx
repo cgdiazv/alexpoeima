@@ -63,7 +63,7 @@ export default function ContactPage() {
       <section className="py-16 md:py-24 border-b border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-950">
         <div className="max-w-5xl mx-auto px-6 text-center space-y-4">
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">
-            Contact Alex Poeima
+            Contact Alexpoeima
           </h1>
           <p className="text-base md:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed">
             Have questions about fine art prints, private commissions, live event bookings, or gallery exhibitions? We'd love to connect with you.

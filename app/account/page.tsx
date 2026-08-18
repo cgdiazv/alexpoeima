@@ -431,7 +431,7 @@ export default function AccountPage() {
                 <span>Edit Profile Details</span>
               </h2>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-                Update your personal information associated with your Alex Poeima buyer account.
+                Update your personal information associated with your Alexpoeima buyer account.
               </p>
             </div>
 
@@ -671,7 +671,7 @@ export default function AccountPage() {
                 <span>Delete Buyer Account</span>
               </h2>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-                Permanently remove your active profile session and credentials from Alex Poeima Fine Art.
+                Permanently remove your active profile session and credentials from Alexpoeima Fine Art.
               </p>
             </div>
 

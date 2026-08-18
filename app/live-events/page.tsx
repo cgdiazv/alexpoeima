@@ -63,7 +63,7 @@ export default function LiveEventsPage() {
             Preserve Magical Moments Live on Canvas
           </h1>
           <p className="text-base md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed">
-            Elevate your wedding, gala, or celebration with a live event painting experience by Alex Poeima. Guests watch the painting unfold in real-time while a priceless heirloom is born.
+            Elevate your wedding, gala, or celebration with a live event painting experience by Alexpoeima. Guests watch the painting unfold in real-time while a priceless heirloom is born.
           </p>
         </div>
       </section>
