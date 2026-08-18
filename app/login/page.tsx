@@ -44,7 +44,7 @@ export default function LoginPage() {
         throw new Error(data?.message || "Authentication failed");
       }
 
-      router.push("/");
+      router.push("/account");
       router.refresh();
     } catch (err: any) {
       console.error(err);
