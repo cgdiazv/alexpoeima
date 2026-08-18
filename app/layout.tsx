@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
@@ -17,6 +17,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 export const metadata: Metadata = {
   title: {
     default: "Alexpoeima Art",
@@ -24,6 +31,7 @@ export const metadata: Metadata = {
   },
   description: "Official store for Alexpoeima Art - Fine art prints and original artworks.",
 };
+
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   let currency = "USD";
