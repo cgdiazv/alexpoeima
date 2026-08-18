@@ -720,7 +720,7 @@ export default function CheckoutPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 px-6 rounded-md bg-black text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 font-bold text-base shadow-md disabled:opacity-50 transition-colors flex items-center justify-center space-x-2"
+              className="w-full py-4 px-6 rounded-md bg-[#9e8b43] hover:bg-[#8a7833] text-white font-bold text-base shadow-md disabled:opacity-50 transition-colors flex items-center justify-center space-x-2"
             >
               <Lock className="w-4 h-4" />
               <span>{loading ? "Processing Order..." : "Place order"}</span>
@@ -817,7 +817,7 @@ export default function CheckoutPage() {
             <button
               type="button"
               onClick={handleApplyCoupon}
-              className="px-6 py-3 rounded-md bg-black text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 font-semibold text-sm shadow transition-colors"
+              className="px-6 py-3 rounded-md bg-[#9e8b43] hover:bg-[#8a7833] text-white font-semibold text-sm shadow transition-colors"
             >
               Apply
             </button>

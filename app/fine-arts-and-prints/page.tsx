@@ -29,7 +29,7 @@ export default async function FineArtsAndPrintsPage() {
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
             Fine Arts & Prints
           </h1>
-          <p className="text-base md:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto font-light">
+          <p className="text-base md:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto font-normal">
             Explore original paintings, mixed media compositions, and museum-grade Giclée prints. Each piece is crafted with meticulous care and archival standards.
           </p>
         </div>
@@ -94,7 +94,7 @@ export default async function FineArtsAndPrintsPage() {
         </p>
         <Link
           href="/contact"
-          className="inline-block px-8 py-3.5 bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-lg shadow-md transition-colors"
+          className="inline-block px-8 py-3.5 bg-[#9e8b43] hover:bg-[#8a7833] text-white font-semibold rounded-lg shadow-md transition-colors"
         >
           Inquire for Custom Order
         </Link>

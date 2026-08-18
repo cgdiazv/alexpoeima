@@ -65,7 +65,7 @@ export default function ContactPage() {
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">
             Contact Alexpoeima
           </h1>
-          <p className="text-base md:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto font-light leading-relaxed">
+          <p className="text-base md:text-xl text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto font-normal leading-relaxed">
             Have questions about fine art prints, private commissions, live event bookings, or gallery exhibitions? We'd love to connect with you.
           </p>
         </div>
@@ -113,7 +113,7 @@ export default function ContactPage() {
         <div className="lg:col-span-7 bg-zinc-50 dark:bg-zinc-900 p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-xl">
           {submitted ? (
             <div className="text-center py-12 space-y-4">
-              <CheckCircle2 className="w-16 h-16 text-emerald-500 mx-auto" />
+              <CheckCircle2 className="w-16 h-16 text-[#9e8b43] dark:text-[#decf92] mx-auto" strokeWidth={1} />
               <h3 className="text-2xl font-bold">Message Sent Successfully!</h3>
               <p className="text-zinc-600 dark:text-zinc-400 max-w-md mx-auto">
                 Thank you for reaching out. We have received your message and will reply to <strong>{formData.email}</strong> shortly.
@@ -191,7 +191,7 @@ export default function ContactPage() {
               <button
                 type="submit"
                 disabled={sending}
-                className="w-full py-4 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-900 rounded-lg text-sm font-semibold transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-4 bg-[#9e8b43] hover:bg-[#8a7833] text-white rounded-lg text-sm font-semibold transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
               >
                 <Send className="w-4 h-4" /> {sending ? "Sending Email..." : "Send Message"}
               </button>

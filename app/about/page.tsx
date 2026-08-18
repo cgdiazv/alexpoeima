@@ -18,7 +18,7 @@ export default function AboutPage() {
           <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-6 leading-tight">
             Art that speaks beyond words.
           </h1>
-          <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed">
+          <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-normal leading-relaxed">
             Welcome to the creative world of <strong className="font-semibold text-zinc-900 dark:text-zinc-100">Alexpoeima</strong>. 
             Blending expressive brushwork, intricate textures, and emotional depth to transform spaces and memorable live moments into timeless fine art.
           </p>
@@ -40,7 +40,7 @@ export default function AboutPage() {
           <div className="pt-4 flex flex-wrap gap-4">
             <Link
               href="/fine-arts-and-prints"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-900 rounded-lg text-sm font-medium transition-all shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#9e8b43] hover:bg-[#8a7833] text-white rounded-lg text-sm font-medium transition-all shadow-md"
             >
               View Fine Art Collection <ArrowRight className="w-4 h-4" />
             </Link>

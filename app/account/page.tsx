@@ -340,7 +340,7 @@ export default function AccountPage() {
                 <div className="pt-2">
                   <Link
                     href="/products"
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-black text-white dark:bg-white dark:text-black font-semibold text-sm hover:opacity-90 transition-opacity"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-[#9e8b43] hover:bg-[#8a7833] text-white font-bold text-sm shadow transition-colors"
                   >
                     <span>Browse Collection</span>
                     <ChevronRight className="w-4 h-4" />
@@ -497,7 +497,7 @@ export default function AccountPage() {
                 <button
                   type="submit"
                   disabled={savingProfile}
-                  className="px-6 py-2.5 rounded-lg bg-black text-white dark:bg-white dark:text-black font-semibold text-sm hover:opacity-90 transition-opacity flex items-center gap-2 disabled:opacity-50"
+                  className="px-6 py-2.5 rounded-lg bg-[#9e8b43] hover:bg-[#8a7833] text-white font-bold text-sm shadow transition-colors flex items-center gap-2 disabled:opacity-50"
                 >
                   {savingProfile ? (
                     <>
@@ -646,7 +646,7 @@ export default function AccountPage() {
                 <button
                   type="submit"
                   disabled={savingAddress}
-                  className="px-6 py-2.5 rounded-lg bg-black text-white dark:bg-white dark:text-black font-semibold text-sm hover:opacity-90 transition-opacity flex items-center gap-2 disabled:opacity-50"
+                  className="px-6 py-2.5 rounded-lg bg-[#9e8b43] hover:bg-[#8a7833] text-white font-bold text-sm shadow transition-colors flex items-center gap-2 disabled:opacity-50"
                 >
                   {savingAddress ? (
                     <>

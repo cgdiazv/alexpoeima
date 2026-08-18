@@ -10,7 +10,7 @@ export default function CheckoutSuccessPage() {
         </p>
         <Link 
           href="/" 
-          className="inline-block w-full justify-center rounded-md bg-black px-3 py-2.5 text-sm font-semibold text-white hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition-colors"
+          className="inline-block w-full justify-center rounded-md bg-[#9e8b43] hover:bg-[#8a7833] px-3 py-2.5 text-sm font-bold text-white transition-colors"
         >
           Return to Home
         </Link>

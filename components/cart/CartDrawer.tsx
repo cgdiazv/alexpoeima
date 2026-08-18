@@ -64,7 +64,7 @@ export function CartDrawer() {
                 <p className="text-zinc-500 dark:text-zinc-400 font-medium mb-4">Your cart is currently empty.</p>
                 <button
                   onClick={closeCart}
-                  className="px-5 py-2.5 rounded-md bg-black text-white dark:bg-white dark:text-black font-medium text-sm hover:opacity-80 transition-opacity"
+                  className="px-5 py-2.5 rounded-md bg-[#9e8b43] hover:bg-[#8a7833] text-white font-bold text-sm shadow transition-colors"
                 >
                   Continue Shopping
                 </button>
@@ -142,7 +142,7 @@ export function CartDrawer() {
               <Link
                 href="/checkout"
                 onClick={closeCart}
-                className="flex items-center justify-center w-full rounded-md bg-black px-6 py-3 text-base font-medium text-white shadow hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 transition-colors"
+                className="flex items-center justify-center w-full rounded-md bg-[#9e8b43] hover:bg-[#8a7833] px-6 py-3 text-base font-bold text-white shadow transition-colors"
               >
                 Proceed to Checkout
               </Link>

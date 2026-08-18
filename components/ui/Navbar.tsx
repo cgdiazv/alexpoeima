@@ -55,7 +55,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-black/80">
+    <nav className="sticky top-0 z-40 w-full border-b border-[#eae4d2] bg-[#fdfcf8]/90 backdrop-blur-md dark:border-zinc-800 dark:bg-[#12110c]/90">
       <div className="mx-auto flex max-w-7xl items-center justify-between p-4 sm:px-6 lg:px-8">
         <div className="flex items-center space-x-8">
           <Link href="/" className="flex items-center">
@@ -110,7 +110,7 @@ export function Navbar() {
           <button onClick={openCart} className="relative group p-1" aria-label="Open cart">
             <ShoppingBag className="w-6 h-6 text-gray-700 group-hover:text-black dark:text-gray-300 dark:group-hover:text-white transition-colors" strokeWidth={0.75} />
             {totalItems > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-black text-xs font-bold text-white dark:bg-white dark:text-black">
+              <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#decf92] text-xs font-extrabold text-zinc-950">
                 {totalItems}
               </span>
             )}

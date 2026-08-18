@@ -67,7 +67,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       className={`${aboreto.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className={`${aboreto.className} min-h-screen flex flex-col bg-white dark:bg-black text-zinc-900 dark:text-zinc-100`}>
+      <body className={`${aboreto.className} min-h-screen flex flex-col bg-[#fdfcf8] dark:bg-[#12110c] text-zinc-900 dark:text-zinc-100 font-semibold`}>
         <CartProvider
           currency={currency}
           pricesIncludeTax={pricesIncludeTax}

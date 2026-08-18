@@ -16,10 +16,13 @@ export default async function Home() {
       {/* Hero Section */}
       <section className="relative overflow-hidden py-20 md:py-28 border-b border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-950">
         <div className="mx-auto max-w-5xl px-6 text-center">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-[#decf92]/20 border border-[#decf92]/50 text-[#8a7b42] dark:text-[#decf92] text-xs font-bold uppercase tracking-widest mb-4">
+            Fine Art & Commissions
+          </span>
           <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-6 leading-tight">
             Welcome to Alexpoeima
           </h1>
-          <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed">
+          <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-normal leading-relaxed">
             Discover exclusive art pieces, fine prints, and more.
           </p>
         </div>
