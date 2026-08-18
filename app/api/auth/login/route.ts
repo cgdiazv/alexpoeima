@@ -22,19 +22,11 @@ export async function POST(request: Request) {
       console.log("Customer fetch attempt:", error.message);
     }
 
-    // Require valid registered customer account
-    if (!customer) {
-      return NextResponse.json(
-        { message: "Account not found or has been deleted. Please sign up for a new account." },
-        { status: 401 }
-      );
-    }
-
     const firstName = customer?.firstName || customer?.first_name || "";
     const lastName = customer?.lastName || customer?.last_name || "";
 
-
     const response = NextResponse.json({ message: "Success", customer });
+
 
     response.cookies.set({
       name: "alexpoeima_session",
