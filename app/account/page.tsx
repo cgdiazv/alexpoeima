@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { formatCurrency } from "@/lib/currency";
+import { REGIONS_BY_COUNTRY, COUNTRIES } from "@/lib/regions";
 import {
   User,
   ShoppingBag,
@@ -77,12 +78,21 @@ export default function AccountPage() {
     address1: "",
     address2: "",
     city: "",
-    state: "",
+    state: "California",
     postalCode: "",
-    country: "United States",
+    country: "United States (US)",
   });
   const [savingAddress, setSavingAddress] = useState(false);
   const [addressMsg, setAddressMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  const handleCountryChange = (newCountry: string) => {
+    const availableRegions = REGIONS_BY_COUNTRY[newCountry] || [];
+    setAddressData((prev) => ({
+      ...prev,
+      country: newCountry,
+      state: availableRegions[0] || "",
+    }));
+  };
 
   // Delete Account Modal State
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -109,12 +119,13 @@ export default function AccountPage() {
               address1: data.user.address.address1 || "",
               address2: data.user.address.address2 || "",
               city: data.user.address.city || "",
-              state: data.user.address.state || "",
+              state: data.user.address.state || "California",
               postalCode: data.user.address.postalCode || "",
-              country: data.user.address.country || "United States",
+              country: data.user.address.country || "United States (US)",
             });
           }
         } else {
+
           router.push("/login");
         }
       } catch (error) {
@@ -560,6 +571,23 @@ export default function AccountPage() {
                 />
               </div>
 
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mb-1.5">
+                  Country / Region
+                </label>
+                <select
+                  value={addressData.country}
+                  onChange={(e) => handleCountryChange(e.target.value)}
+                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none"
+                >
+                  {COUNTRIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mb-1.5">
@@ -577,41 +605,41 @@ export default function AccountPage() {
                   <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mb-1.5">
                     State / Province
                   </label>
-                  <input
-                    type="text"
-                    required
-                    value={addressData.state}
-                    onChange={(e) => setAddressData({ ...addressData, state: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none"
-                  />
+                  {REGIONS_BY_COUNTRY[addressData.country] ? (
+                    <select
+                      value={addressData.state}
+                      onChange={(e) => setAddressData({ ...addressData, state: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none"
+                    >
+                      {REGIONS_BY_COUNTRY[addressData.country].map((region) => (
+                        <option key={region} value={region}>
+                          {region}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      type="text"
+                      required
+                      value={addressData.state}
+                      onChange={(e) => setAddressData({ ...addressData, state: e.target.value })}
+                      className="w-full px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none"
+                    />
+                  )}
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mb-1.5">
-                    Postal / ZIP Code
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={addressData.postalCode}
-                    onChange={(e) => setAddressData({ ...addressData, postalCode: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mb-1.5">
-                    Country
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={addressData.country}
-                    onChange={(e) => setAddressData({ ...addressData, country: e.target.value })}
-                    className="w-full px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none"
-                  />
-                </div>
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-600 dark:text-zinc-400 mb-1.5">
+                  Postal / ZIP Code
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={addressData.postalCode}
+                  onChange={(e) => setAddressData({ ...addressData, postalCode: e.target.value })}
+                  className="w-full px-4 py-2.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-white text-sm focus:ring-2 focus:ring-black dark:focus:ring-white focus:outline-none"
+                />
               </div>
 
               <div className="pt-2">
