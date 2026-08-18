@@ -15,7 +15,21 @@ export async function GET() {
       Buffer.from(sessionCookie.value, "base64").toString("utf-8")
     );
 
+    // Verify customer exists in Prado Commerce
+    if (sessionData.email) {
+      try {
+        const customers = await pradoAdmin(`/api/customers?email=${encodeURIComponent(sessionData.email)}`);
+        if (!Array.isArray(customers) || customers.length === 0) {
+          cookieStore.delete("alexpoeima_session");
+          return NextResponse.json({ loggedIn: false });
+        }
+      } catch (custErr: any) {
+        console.log("Customer existence check error:", custErr.message);
+      }
+    }
+
     let orders: any[] = [];
+
     try {
       if (sessionData.email) {
         const res = await pradoAdmin(`/api/orders?email=${encodeURIComponent(sessionData.email)}`);
