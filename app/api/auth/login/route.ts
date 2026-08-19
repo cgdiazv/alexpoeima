@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { pradoClient } from "@/lib/prado";
+import { isAccountDeleted } from "@/lib/deletedAccounts";
 
 export async function POST(request: Request) {
   try {
@@ -9,6 +10,13 @@ export async function POST(request: Request) {
       return NextResponse.json(
         { message: "Email and password are required" },
         { status: 400 }
+      );
+    }
+
+    if (isAccountDeleted(email)) {
+      return NextResponse.json(
+        { message: "This account has been deleted. Please register a new account if you wish to shop with us." },
+        { status: 401 }
       );
     }
 

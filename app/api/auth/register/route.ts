@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { pradoClient } from "@/lib/prado";
 import { sendEmail, DEFAULT_FROM_EMAIL } from "@/lib/resend";
+import { unmarkAccountDeleted } from "@/lib/deletedAccounts";
 
 export async function POST(request: Request) {
   try {
@@ -39,6 +40,7 @@ export async function POST(request: Request) {
 
       if (pradoRes?.customer) {
         customer = pradoRes.customer;
+        unmarkAccountDeleted(email);
         console.log("[Register] Prado Customer created successfully:", customer.id);
       } else if (pradoRes?.error) {
         return NextResponse.json(

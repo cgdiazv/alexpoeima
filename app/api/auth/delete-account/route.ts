@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { sendEmail, DEFAULT_FROM_EMAIL } from "@/lib/resend";
-import { pradoAdmin } from "@/lib/prado";
+import { markAccountDeleted } from "@/lib/deletedAccounts";
 
 export async function DELETE() {
   try {
@@ -26,20 +26,9 @@ export async function DELETE() {
 
     const { email, firstName } = sessionData;
 
-    // 1. Delete Customer record from Prado Commerce backend
+    // 1. Mark account as deleted in system to prevent future logins
     if (email) {
-      try {
-        const customers = await pradoAdmin(`/api/customers?email=${encodeURIComponent(email)}`);
-        if (Array.isArray(customers) && customers.length > 0) {
-          for (const cust of customers) {
-            if (cust.id) {
-              await pradoAdmin(`/api/customers/${cust.id}`, { method: "DELETE" });
-            }
-          }
-        }
-      } catch (pradoErr: any) {
-        console.log("[Delete Account] Prado customer removal notice:", pradoErr.message || pradoErr);
-      }
+      markAccountDeleted(email);
     }
 
     // 2. Send Account Deletion Confirmation Email via Resend
