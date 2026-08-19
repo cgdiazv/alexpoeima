@@ -66,7 +66,7 @@ export function ProductCard({ product }: ProductCardProps) {
               image: imageUrl,
             });
           }}
-          className="w-full rounded-md bg-black px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 dark:bg-white dark:text-black dark:hover:bg-gray-200 dark:focus:ring-white dark:focus:ring-offset-gray-900 transition-colors"
+          className="w-full rounded-md bg-[#9e8b43] hover:bg-[#8a7833] px-4 py-2.5 text-sm font-bold text-white shadow transition-colors"
         >
           Add to Cart
         </button>

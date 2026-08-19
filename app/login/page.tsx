@@ -234,7 +234,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative flex w-full justify-center rounded-md bg-black px-3 py-2.5 text-sm font-semibold text-white hover:bg-zinc-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black dark:bg-white dark:text-black dark:hover:bg-zinc-200 disabled:opacity-50 transition-colors"
+              className="group relative flex w-full justify-center rounded-md bg-[#9e8b43] hover:bg-[#8a7833] px-3 py-2.5 text-sm font-bold text-white shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#9e8b43] disabled:opacity-50 transition-colors"
             >
               {loading
                 ? "Processing..."

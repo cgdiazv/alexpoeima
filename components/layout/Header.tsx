@@ -7,7 +7,7 @@ export function Header() {
       <Link href="/" className="flex items-center">
         <Image
           src="/logo-script.webp"
-          alt="Alex Poeima"
+          alt="Alexpoeima"
           width={180}
           height={45}
           className="h-8 w-auto object-contain dark:invert"

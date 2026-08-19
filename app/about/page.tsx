@@ -3,7 +3,7 @@ import { Palette, ArrowRight } from "lucide-react";
 
 export const metadata = {
   title: "About Me",
-  description: "Learn more about Alex Poeima - Fine artist, live painter, and custom artwork creator.",
+  description: "Learn more about Alexpoeima - Fine artist, live painter, and custom artwork creator.",
 };
 
 export default function AboutPage() {
@@ -18,8 +18,8 @@ export default function AboutPage() {
           <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50 mb-6 leading-tight">
             Art that speaks beyond words.
           </h1>
-          <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed">
-            Welcome to the creative world of <strong className="font-semibold text-zinc-900 dark:text-zinc-100">Alex Poeima</strong>. 
+          <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-normal leading-relaxed">
+            Welcome to the creative world of <strong className="font-semibold text-zinc-900 dark:text-zinc-100">Alexpoeima</strong>. 
             Blending expressive brushwork, intricate textures, and emotional depth to transform spaces and memorable live moments into timeless fine art.
           </p>
         </div>
@@ -32,7 +32,7 @@ export default function AboutPage() {
             The Journey & Philosophy
           </h2>
           <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
-            Alex Poeima has spent over a decade perfecting a distinct artistic style that balances bold realism with fluid abstraction. Each creation is guided by a passion for texture, luminous light, and authentic emotional resonance.
+            Alexpoeima has spent over a decade perfecting a distinct artistic style that balances bold realism with fluid abstraction. Each creation is guided by a passion for texture, luminous light, and authentic emotional resonance.
           </p>
           <p className="text-zinc-600 dark:text-zinc-400 leading-relaxed">
             Whether crafting bespoke private commissions, creating fine archival prints, or capturing the high-energy romance of live events on canvas, Alex brings unparalleled dedicated craftsmanship to every brushstroke.
@@ -40,7 +40,7 @@ export default function AboutPage() {
           <div className="pt-4 flex flex-wrap gap-4">
             <Link
               href="/fine-arts-and-prints"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:hover:bg-white text-white dark:text-zinc-900 rounded-lg text-sm font-medium transition-all shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#9e8b43] hover:bg-[#8a7833] text-white rounded-lg text-sm font-medium transition-all shadow-md"
             >
               View Fine Art Collection <ArrowRight className="w-4 h-4" />
             </Link>

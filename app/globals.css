@@ -1,28 +1,56 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
+  --background: #fdfcf8;
   --foreground: #171717;
+  --primary: #decf92;
+  --primary-hover: #c9b97b;
+  --primary-light: #fdfcf8;
+  --btn-gold: #9e8b43;
+  --btn-gold-hover: #8a7833;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --color-primary: #decf92;
+  --color-brand: #decf92;
+  --font-sans: var(--font-aboreto), "Aboreto", serif, sans-serif;
   --font-mono: var(--font-geist-mono);
+
+  /* Ultra Light Ivory Gold replacements for grayish backgrounds */
+  --color-zinc-50: #faf8f2;
+  --color-zinc-100: #f5f2e6;
+  --color-zinc-200: #eae4d2;
+  --color-gray-50: #faf8f2;
+  --color-gray-100: #f5f2e6;
+  --color-gray-200: #eae4d2;
+
+  --color-amber-50: #fcf9ee;
+  --color-amber-100: #f7f3e1;
+  --color-amber-200: #eee4c0;
+  --color-amber-300: #e5d59c;
+  --color-amber-400: #decf92;
+  --color-amber-500: #9e8b43;
+  --color-amber-600: #9e8b43;
+  --color-amber-700: #8a7833;
+  --color-amber-800: #786828;
+  --color-amber-900: #594c1c;
+  --color-amber-950: #38321d;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #12110c;
+    --foreground: #f4edd8;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-aboreto), "Aboreto", serif, sans-serif;
+  font-weight: 600;
 }
 
 /* Prevent iPhone / iOS Safari auto-zoom on input click and focus */

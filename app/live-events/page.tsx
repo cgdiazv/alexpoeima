@@ -62,8 +62,8 @@ export default function LiveEventsPage() {
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">
             Preserve Magical Moments Live on Canvas
           </h1>
-          <p className="text-base md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-light leading-relaxed">
-            Elevate your wedding, gala, or celebration with a live event painting experience by Alex Poeima. Guests watch the painting unfold in real-time while a priceless heirloom is born.
+          <p className="text-base md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-normal leading-relaxed">
+            Elevate your wedding, gala, or celebration with a live event painting experience by Alexpoeima. Guests watch the painting unfold in real-time while a priceless heirloom is born.
           </p>
         </div>
       </section>
@@ -77,8 +77,8 @@ export default function LiveEventsPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div className="p-8 bg-zinc-50 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-pink-500/10 text-pink-600 dark:text-pink-400 flex items-center justify-center">
-              <Heart className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-xl bg-[#decf92]/20 text-[#9e8b43] dark:text-[#decf92] border border-[#decf92]/30 flex items-center justify-center">
+              <Heart className="w-6 h-6" strokeWidth={1} />
             </div>
             <h3 className="text-xl font-bold">Luxury Weddings</h3>
             <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -87,8 +87,8 @@ export default function LiveEventsPage() {
           </div>
 
           <div className="p-8 bg-zinc-50 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-              <Users className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-xl bg-[#decf92]/20 text-[#9e8b43] dark:text-[#decf92] border border-[#decf92]/30 flex items-center justify-center">
+              <Users className="w-6 h-6" strokeWidth={1} />
             </div>
             <h3 className="text-xl font-bold">Corporate Galas</h3>
             <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -97,8 +97,8 @@ export default function LiveEventsPage() {
           </div>
 
           <div className="p-8 bg-zinc-50 dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center">
-              <Award className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-xl bg-[#decf92]/20 text-[#9e8b43] dark:text-[#decf92] border border-[#decf92]/30 flex items-center justify-center">
+              <Award className="w-6 h-6" strokeWidth={1} />
             </div>
             <h3 className="text-xl font-bold">Charity Auctions</h3>
             <p className="text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed">
@@ -115,19 +115,19 @@ export default function LiveEventsPage() {
             <h2 className="text-3xl font-bold tracking-tight">What Is Included in the Experience</h2>
             <ul className="space-y-4">
               <li className="flex items-start gap-3 text-sm text-zinc-700 dark:text-zinc-300">
-                <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-5 h-5 text-[#9e8b43] dark:text-[#decf92] flex-shrink-0 mt-0.5" strokeWidth={1} />
                 <span><strong>Pre-Event Consultation:</strong> Selecting background elements, key figures, pose, and canvas size.</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-zinc-700 dark:text-zinc-300">
-                <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-5 h-5 text-[#9e8b43] dark:text-[#decf92] flex-shrink-0 mt-0.5" strokeWidth={1} />
                 <span><strong>5-8 Hours Live Painting:</strong> Alex sets up early and paints live throughout your ceremony & reception.</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-zinc-700 dark:text-zinc-300">
-                <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-5 h-5 text-[#9e8b43] dark:text-[#decf92] flex-shrink-0 mt-0.5" strokeWidth={1} />
                 <span><strong>Guest Engagement:</strong> Guests love watching the canvas evolve and chatting with the artist.</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-zinc-700 dark:text-zinc-300">
-                <CheckCircle2 className="w-5 h-5 text-emerald-500 flex-shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-5 h-5 text-[#9e8b43] dark:text-[#decf92] flex-shrink-0 mt-0.5" strokeWidth={1} />
                 <span><strong>Studio Touch-ups & Framing:</strong> Studio refinement, protective varnish seal, and ready-to-hang delivery.</span>
               </li>
             </ul>
@@ -137,7 +137,7 @@ export default function LiveEventsPage() {
             <h3 className="text-2xl font-bold mb-6">Inquire Event Availability</h3>
             {bookingSubmitted ? (
               <div className="text-center py-8 space-y-3">
-                <CheckCircle2 className="w-12 h-12 text-emerald-500 mx-auto" />
+                <CheckCircle2 className="w-12 h-12 text-[#9e8b43] dark:text-[#decf92] mx-auto" strokeWidth={1} />
                 <h4 className="text-xl font-bold">Booking Request Sent</h4>
                 <p className="text-sm text-zinc-500">We will check Alex's travel schedule and respond within 24 hours.</p>
                 <button
@@ -215,7 +215,7 @@ export default function LiveEventsPage() {
                 <button
                   type="submit"
                   disabled={sending}
-                  className="w-full py-3 bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm rounded-lg shadow-md transition-colors disabled:opacity-50"
+                  className="w-full py-3 bg-[#9e8b43] hover:bg-[#8a7833] text-white font-semibold text-sm rounded-lg shadow-md transition-colors disabled:opacity-50"
                 >
                   {sending ? "Checking Availability..." : "Check Date Availability"}
                 </button>

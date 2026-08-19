@@ -55,13 +55,13 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-black/80">
+    <nav className="sticky top-0 z-40 w-full border-b border-zinc-200 bg-white/90 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/90">
       <div className="mx-auto flex max-w-7xl items-center justify-between p-4 sm:px-6 lg:px-8">
         <div className="flex items-center space-x-8">
           <Link href="/" className="flex items-center">
             <Image
               src="/logo-script.webp"
-              alt="Alex Poeima"
+              alt="Alexpoeima"
               width={260}
               height={65}
               className="h-12 sm:h-14 lg:h-16 w-auto object-contain dark:invert"
@@ -94,7 +94,7 @@ export function Navbar() {
               href="/account"
               className="flex items-center space-x-1.5 text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors"
             >
-              <User className="w-4 h-4" />
+              <User className="w-5 h-5" strokeWidth={0.75} />
               <span className="hidden sm:inline">Account</span>
             </Link>
           ) : (
@@ -102,15 +102,15 @@ export function Navbar() {
               href="/login"
               className="flex items-center space-x-1.5 text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors"
             >
-              <User className="w-4 h-4" />
+              <User className="w-5 h-5" strokeWidth={0.75} />
               <span className="hidden sm:inline">Login</span>
             </Link>
           )}
 
           <button onClick={openCart} className="relative group p-1" aria-label="Open cart">
-            <ShoppingBag className="w-6 h-6 text-gray-700 group-hover:text-black dark:text-gray-300 dark:group-hover:text-white transition-colors" />
+            <ShoppingBag className="w-6 h-6 text-gray-700 group-hover:text-black dark:text-gray-300 dark:group-hover:text-white transition-colors" strokeWidth={0.75} />
             {totalItems > 0 && (
-              <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-black text-xs font-bold text-white dark:bg-white dark:text-black">
+              <span className="absolute -top-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-[#decf92] text-xs font-extrabold text-zinc-950">
                 {totalItems}
               </span>
             )}
@@ -122,7 +122,7 @@ export function Navbar() {
             className="p-1 lg:hidden text-gray-700 dark:text-gray-300 focus:outline-none"
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? <X className="w-6 h-6" strokeWidth={0.75} /> : <Menu className="w-6 h-6" strokeWidth={0.75} />}
           </button>
         </div>
       </div>
@@ -153,7 +153,7 @@ export function Navbar() {
                   <Link href="/" onClick={() => setMobileMenuOpen(false)}>
                     <Image
                       src="/logo-script.webp"
-                      alt="Alex Poeima"
+                      alt="Alexpoeima"
                       width={200}
                       height={50}
                       className="h-10 sm:h-12 w-auto object-contain dark:invert"
@@ -164,7 +164,7 @@ export function Navbar() {
                     className="p-2 rounded-full text-gray-500 hover:text-black dark:hover:text-white hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
                     aria-label="Close menu"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-5 h-5" strokeWidth={0.75} />
                   </button>
                 </div>
 
@@ -198,7 +198,7 @@ export function Navbar() {
                     onClick={() => setMobileMenuOpen(false)}
                     className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white"
                   >
-                    <User className="w-4 h-4" />
+                    <User className="w-4 h-4" strokeWidth={0.75} />
                     <span>My Account</span>
                   </Link>
                 ) : (
@@ -207,11 +207,11 @@ export function Navbar() {
                     onClick={() => setMobileMenuOpen(false)}
                     className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white"
                   >
-                    <User className="w-4 h-4" />
+                    <User className="w-4 h-4" strokeWidth={0.75} />
                     <span>Sign In / Register</span>
                   </Link>
                 )}
-                <p className="text-xs text-zinc-400 px-3">&copy; {new Date().getFullYear()} Alex Poeima Art</p>
+                <p className="text-xs text-zinc-400 px-3">&copy; {new Date().getFullYear()} Alexpoeima Art</p>
               </div>
             </div>
           </div>,

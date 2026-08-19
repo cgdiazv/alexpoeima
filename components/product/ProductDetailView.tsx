@@ -127,7 +127,7 @@ export function ProductDetailView({
                     onClick={() => setSelectedVariantIndex(idx)}
                     className={`px-4 py-2 text-sm font-medium rounded-md border transition-all ${
                       selectedVariantIndex === idx
-                        ? "border-black bg-black text-white dark:border-white dark:bg-white dark:text-black"
+                        ? "border-[#9e8b43] bg-[#9e8b43] text-white"
                         : "border-zinc-300 dark:border-zinc-700 bg-transparent text-zinc-900 dark:text-white hover:border-zinc-400"
                     }`}
                   >
@@ -173,7 +173,7 @@ export function ProductDetailView({
 
               <button
                 onClick={handleAddToCart}
-                className="flex-1 rounded-md bg-black px-6 py-3 text-base font-medium text-white shadow-md hover:bg-zinc-800 dark:bg-white dark:text-black dark:hover:bg-zinc-200 focus:outline-none transition-colors"
+                className="flex-1 rounded-md bg-[#9e8b43] hover:bg-[#8a7833] text-white px-6 py-3 text-base font-bold shadow-md focus:outline-none transition-colors"
               >
                 Add to Cart
               </button>

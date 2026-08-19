@@ -59,18 +59,18 @@ export async function POST(request: Request) {
       const emailResult = await sendEmail({
         to: email,
         from: DEFAULT_FROM_EMAIL,
-        subject: "Welcome to Alex Poeima Fine Art!",
+        subject: "Welcome to Alexpoeima Fine Art!",
         html: `
           <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 20px; color: #18181b; background-color: #ffffff;">
             <div style="text-align: center; margin-bottom: 32px;">
-              <h1 style="font-size: 28px; font-weight: 700; tracking-tight: -0.02em; margin: 0 0 8px 0; color: #09090b;">ALEX POEIMA</h1>
+              <h1 style="font-size: 28px; font-weight: 700; tracking-tight: -0.02em; margin: 0 0 8px 0; color: #09090b;">ALEXPOEIMA</h1>
               <p style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: #71717a; margin: 0;">Fine Art & Commerce</p>
             </div>
             
             <div style="border-top: 1px solid #e4e4e7; border-bottom: 1px solid #e4e4e7; padding: 24px 0; margin-bottom: 32px;">
               <h2 style="font-size: 20px; font-weight: 600; margin: 0 0 16px 0;">Welcome, ${firstName}!</h2>
               <p style="font-size: 15px; line-height: 1.6; color: #3f3f46; margin: 0 0 16px 0;">
-                Thank you for registering your buyer account with Alex Poeima Fine Art. We're thrilled to have you as part of our creative community.
+                Thank you for registering your buyer account with Alexpoeima Fine Art. We're thrilled to have you as part of our creative community.
               </p>
               <p style="font-size: 15px; line-height: 1.6; color: #3f3f46; margin: 0;">
                 From your account dashboard, you can track order status, manage your saved shipping details, and view your purchase history for fine art pieces, original paintings, prints, and live event bookings.
@@ -84,12 +84,12 @@ export async function POST(request: Request) {
             </div>
 
             <div style="font-size: 13px; color: #a1a1aa; text-align: center; border-top: 1px solid #f4f4f5; padding-top: 24px;">
-              <p style="margin: 0 0 8px 0;">© ${new Date().getFullYear()} Alex Poeima Art. All rights reserved.</p>
+              <p style="margin: 0 0 8px 0;">© ${new Date().getFullYear()} Alexpoeima Art. All rights reserved.</p>
               <p style="margin: 0;">Need assistance? Reply directly to this email or contact support.</p>
             </div>
           </div>
         `,
-        text: `Welcome to Alex Poeima Fine Art, ${firstName}!\n\nThank you for creating your account. You can view your account details at https://www.alexpoeima.com/account.\n\nBest regards,\nAlex Poeima`,
+        text: `Welcome to Alexpoeima Fine Art, ${firstName}!\n\nThank you for creating your account. You can view your account details at https://www.alexpoeima.com/account.\n\nBest regards,\nAlexpoeima`,
       });
 
       if (emailResult.success) {

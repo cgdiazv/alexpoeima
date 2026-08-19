@@ -48,18 +48,18 @@ export async function DELETE() {
         await sendEmail({
           to: email,
           from: DEFAULT_FROM_EMAIL,
-          subject: "Account Deletion Confirmation - Alex Poeima Fine Art",
+          subject: "Account Deletion Confirmation - Alexpoeima Fine Art",
           html: `
             <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 32px 20px; color: #18181b; background-color: #ffffff;">
               <div style="text-align: center; margin-bottom: 32px;">
-                <h1 style="font-size: 28px; font-weight: 700; tracking-tight: -0.02em; margin: 0 0 8px 0; color: #09090b;">ALEX POEIMA</h1>
+                <h1 style="font-size: 28px; font-weight: 700; tracking-tight: -0.02em; margin: 0 0 8px 0; color: #09090b;">ALEXPOEIMA</h1>
                 <p style="font-size: 14px; text-transform: uppercase; letter-spacing: 0.1em; color: #71717a; margin: 0;">Fine Art & Commerce</p>
               </div>
               
               <div style="border-top: 1px solid #e4e4e7; border-bottom: 1px solid #e4e4e7; padding: 24px 0; margin-bottom: 32px;">
                 <h2 style="font-size: 20px; font-weight: 600; margin: 0 0 16px 0;">Account Deleted</h2>
                 <p style="font-size: 15px; line-height: 1.6; color: #3f3f46; margin: 0 0 16px 0;">
-                  Hello ${firstName || "Valued Customer"}, your account on Alex Poeima Fine Art has been successfully deleted upon your request.
+                  Hello ${firstName || "Valued Customer"}, your account on Alexpoeima Fine Art has been successfully deleted upon your request.
                 </p>
                 <p style="font-size: 14px; line-height: 1.6; color: #71717a; margin: 0;">
                   Your login credentials and active browser sessions have been cleared. Should you wish to make future purchases, you are welcome to register a new buyer account at any time.
@@ -67,12 +67,12 @@ export async function DELETE() {
               </div>
 
               <div style="font-size: 13px; color: #a1a1aa; text-align: center; border-top: 1px solid #f4f4f5; padding-top: 24px;">
-                <p style="margin: 0 0 8px 0;">© ${new Date().getFullYear()} Alex Poeima Art. All rights reserved.</p>
+                <p style="margin: 0 0 8px 0;">© ${new Date().getFullYear()} Alexpoeima Art. All rights reserved.</p>
                 <p style="margin: 0;">If you did not request this deletion, please contact support immediately.</p>
               </div>
             </div>
           `,
-          text: `Hello ${firstName || "Valued Customer"},\n\nYour account at Alex Poeima Fine Art has been successfully deleted. Your active sessions have been removed.\n\nBest regards,\nAlex Poeima Fine Art`,
+          text: `Hello ${firstName || "Valued Customer"},\n\nYour account at Alexpoeima Fine Art has been successfully deleted. Your active sessions have been removed.\n\nBest regards,\nAlexpoeima Fine Art`,
         });
       } catch (emailErr: any) {
         console.error("[Delete Account] Confirmation email dispatch error:", emailErr.message || emailErr);

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Aboreto, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { CartDrawer } from "@/components/cart/CartDrawer";
@@ -7,9 +7,10 @@ import { Navbar } from "@/components/ui/Navbar";
 import { Footer } from "@/components/ui/Footer";
 import { pradoClient } from "@/lib/prado";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const aboreto = Aboreto({
+  weight: "400",
   subsets: ["latin"],
+  variable: "--font-aboreto",
 });
 
 const geistMono = Geist_Mono({
@@ -63,10 +64,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${aboreto.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
-      <body className="min-h-screen flex flex-col bg-white dark:bg-black text-zinc-900 dark:text-zinc-100">
+      <body className={`${aboreto.className} min-h-screen flex flex-col bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-semibold`}>
         <CartProvider
           currency={currency}
           pricesIncludeTax={pricesIncludeTax}
