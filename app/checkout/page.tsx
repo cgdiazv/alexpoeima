@@ -100,6 +100,12 @@ export default function CheckoutPage() {
             ...prev,
             firstName: data.user.firstName || "",
             lastName: data.user.lastName || "",
+            streetAddress: data.user.address?.address1 || prev.streetAddress,
+            apartment: data.user.address?.address2 || prev.apartment,
+            city: data.user.address?.city || prev.city,
+            state: data.user.address?.state || prev.state,
+            zip: data.user.address?.postalCode || prev.zip,
+            country: data.user.address?.country || prev.country,
           }));
         }
       } catch (err) {

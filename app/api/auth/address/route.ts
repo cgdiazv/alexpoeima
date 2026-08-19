@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
+import { pradoClient } from "@/lib/prado";
 
 export async function PUT(request: Request) {
   try {
@@ -44,6 +45,24 @@ export async function PUT(request: Request) {
       ...existingSession,
       address: newAddress,
     };
+
+    // Sync address update with Prado Commerce
+    try {
+      const storeId = process.env.NEXT_PUBLIC_PRADO_STORE_ID;
+      if (existingSession.email && storeId) {
+        await pradoClient("/api/storefront/auth", {
+          method: "POST",
+          body: JSON.stringify({
+            storeId,
+            email: existingSession.email,
+            address: newAddress,
+            action: "update",
+          }),
+        }).catch((err) => console.log("[Address API] Prado sync notice:", err.message));
+      }
+    } catch (pradoErr: any) {
+      console.log("[Address API] Error syncing address to Prado Commerce:", pradoErr.message || pradoErr);
+    }
 
     const response = NextResponse.json({
       message: "Shipping address updated successfully",
