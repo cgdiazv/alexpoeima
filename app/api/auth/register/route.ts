@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { pradoAdmin } from "@/lib/prado";
+import { pradoClient } from "@/lib/prado";
 import { sendEmail, DEFAULT_FROM_EMAIL } from "@/lib/resend";
 
 export async function POST(request: Request) {
@@ -20,23 +20,38 @@ export async function POST(request: Request) {
       );
     }
 
-    // 1. Attempt to create Customer in Prado Commerce Dashboard
+    const storeId = process.env.NEXT_PUBLIC_PRADO_STORE_ID;
+
+    // 1. Create Customer in Prado Commerce Storefront Database
     let customer = null;
     try {
-      customer = await pradoAdmin("/api/customers", {
+      const pradoRes = await pradoClient("/api/storefront/auth", {
         method: "POST",
         body: JSON.stringify({
+          storeId,
           email,
+          password,
           firstName,
           lastName,
-          first_name: firstName,
-          last_name: lastName,
-          name: `${firstName} ${lastName}`.trim(),
+          action: "signup",
         }),
       });
-      console.log("[Register] Prado Customer created successfully:", customer?.id || customer);
+
+      if (pradoRes?.customer) {
+        customer = pradoRes.customer;
+        console.log("[Register] Prado Customer created successfully:", customer.id);
+      } else if (pradoRes?.error) {
+        return NextResponse.json(
+          { message: pradoRes.error },
+          { status: 400 }
+        );
+      }
     } catch (error: any) {
-      console.error("[Register] Customer creation attempt in Prado Commerce:", error.message || error);
+      console.error("[Register] Customer creation error in Prado Commerce:", error.message || error);
+      return NextResponse.json(
+        { message: error.message || "Failed to create account in Prado Commerce" },
+        { status: 400 }
+      );
     }
 
     // 2. Send Welcome Email to Buyer via Resend
@@ -87,11 +102,16 @@ export async function POST(request: Request) {
     }
 
     // 3. Set Session Cookie and Return Success
-    const response = NextResponse.json({ message: "Success" });
+    const response = NextResponse.json({ message: "Success", customer });
     
     response.cookies.set({
       name: "alexpoeima_session",
-      value: Buffer.from(JSON.stringify({ email, firstName, lastName })).toString("base64"),
+      value: Buffer.from(JSON.stringify({ 
+        id: customer?.id, 
+        email: customer?.email || email, 
+        firstName: customer?.firstName || firstName, 
+        lastName: customer?.lastName || lastName 
+      })).toString("base64"),
       httpOnly: true,
       path: "/",
       maxAge: 60 * 60 * 24 * 7, // 1 week

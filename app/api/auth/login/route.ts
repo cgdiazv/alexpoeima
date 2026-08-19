@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { pradoAdmin } from "@/lib/prado";
+import { pradoClient } from "@/lib/prado";
 
 export async function POST(request: Request) {
   try {
@@ -12,14 +12,33 @@ export async function POST(request: Request) {
       );
     }
 
+    const storeId = process.env.NEXT_PUBLIC_PRADO_STORE_ID;
+
     let customer = null;
     try {
-      const customers = await pradoAdmin(`/api/customers?email=${encodeURIComponent(email)}`);
-      if (Array.isArray(customers) && customers.length > 0) {
-        customer = customers[0];
+      const pradoRes = await pradoClient("/api/storefront/auth", {
+        method: "POST",
+        body: JSON.stringify({
+          storeId,
+          email,
+          password,
+        }),
+      });
+
+      if (pradoRes?.customer) {
+        customer = pradoRes.customer;
+      } else if (pradoRes?.error) {
+        return NextResponse.json(
+          { message: pradoRes.error },
+          { status: 401 }
+        );
       }
     } catch (error: any) {
-      console.log("Customer fetch attempt:", error.message);
+      console.error("[Login] Prado customer auth error:", error.message || error);
+      return NextResponse.json(
+        { message: error.message || "Invalid email or password" },
+        { status: 401 }
+      );
     }
 
     const firstName = customer?.firstName || customer?.first_name || "";
@@ -27,10 +46,14 @@ export async function POST(request: Request) {
 
     const response = NextResponse.json({ message: "Success", customer });
 
-
     response.cookies.set({
       name: "alexpoeima_session",
-      value: Buffer.from(JSON.stringify({ email, firstName, lastName })).toString("base64"),
+      value: Buffer.from(JSON.stringify({ 
+        id: customer?.id, 
+        email: customer?.email || email, 
+        firstName, 
+        lastName 
+      })).toString("base64"),
       httpOnly: true,
       path: "/",
       maxAge: 60 * 60 * 24 * 7, // 1 week
@@ -45,3 +68,4 @@ export async function POST(request: Request) {
     );
   }
 }
+
