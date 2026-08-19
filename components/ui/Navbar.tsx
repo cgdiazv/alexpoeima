@@ -26,8 +26,14 @@ export function Navbar() {
         setLoggedIn(false);
       }
     }
+
     checkAuth();
-  }, []);
+
+    window.addEventListener("auth-change", checkAuth);
+    return () => {
+      window.removeEventListener("auth-change", checkAuth);
+    };
+  }, [pathname]);
 
   // Close mobile menu on path change
   useEffect(() => {

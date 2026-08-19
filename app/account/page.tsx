@@ -141,6 +141,7 @@ export default function AccountPage() {
   const handleLogout = async () => {
     try {
       await fetch("/api/auth/logout", { method: "POST" });
+      window.dispatchEvent(new Event("auth-change"));
       router.push("/login");
       router.refresh();
     } catch (error) {
@@ -208,6 +209,7 @@ export default function AccountPage() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Failed to delete account");
 
+      window.dispatchEvent(new Event("auth-change"));
       setIsDeleteModalOpen(false);
       router.push("/");
       router.refresh();

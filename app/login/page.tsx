@@ -47,6 +47,7 @@ export default function LoginPage() {
         throw new Error(data?.message || "Authentication failed");
       }
 
+      window.dispatchEvent(new Event("auth-change"));
       router.push("/account");
       router.refresh();
     } catch (err: any) {
