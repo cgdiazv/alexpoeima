@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #fdfcf8;
   --foreground: #171717;
@@ -8,6 +10,7 @@
   --primary-light: #fdfcf8;
   --btn-gold: #9e8b43;
   --btn-gold-hover: #8a7833;
+  color-scheme: light;
 }
 
 @theme inline {
@@ -39,11 +42,9 @@
   --color-amber-950: #38321d;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #12110c;
-    --foreground: #f4edd8;
-  }
+html,
+body {
+  color-scheme: light;
 }
 
 body {

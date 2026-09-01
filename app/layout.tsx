@@ -23,6 +23,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  colorScheme: "light",
 };
 
 export const metadata: Metadata = {
@@ -64,10 +65,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html
       lang="en"
-      className={`${aboreto.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${aboreto.variable} ${geistMono.variable} light h-full antialiased`}
+      style={{ colorScheme: "light" }}
       suppressHydrationWarning
     >
-      <body className={`${aboreto.className} min-h-screen flex flex-col bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 font-semibold`}>
+      <body className={`${aboreto.className} min-h-screen flex flex-col bg-white text-zinc-900 font-semibold`}>
         <CartProvider
           currency={currency}
           pricesIncludeTax={pricesIncludeTax}
