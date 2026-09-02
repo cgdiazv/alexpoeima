@@ -1,7 +1,7 @@
 import { pradoClient } from "@/lib/prado";
 import { ProductCard } from "@/components/product/ProductCard";
 import Link from "next/link";
-import { ShieldCheck, Award, Sparkles, Filter } from "lucide-react";
+import { ShieldCheck, Globe, Filter } from "lucide-react";
 
 export const revalidate = 60;
 
@@ -24,30 +24,26 @@ export default async function FineArtsAndPrintsPage() {
       <section className="py-16 md:py-24 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50">
         <div className="max-w-6xl mx-auto px-6 text-center space-y-4">
           <span className="inline-flex items-center px-3 py-1 text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 rounded-full border border-amber-200 dark:border-amber-900">
-            Official Studio Collection
+            Originals
           </span>
           <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight">
             Fine Arts & Prints
           </h1>
           <p className="text-base md:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl mx-auto font-normal">
-            Explore original paintings, mixed media compositions, and museum-grade Giclée prints. Each piece is crafted with meticulous care and archival standards.
+            Explore original paintings and reproductions in my style.
           </p>
         </div>
       </section>
 
       {/* Value Badges */}
       <section className="py-8 bg-zinc-100/70 dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800">
-        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
+        <div className="max-w-4xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-center md:text-left">
           <div className="flex items-center justify-center md:justify-start gap-3">
             <ShieldCheck className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
             <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Certificate of Authenticity Included</span>
           </div>
-          <div className="flex items-center justify-center md:justify-start gap-3">
-            <Award className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
-            <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">100% Archival Cotton Rag Paper</span>
-          </div>
-          <div className="flex items-center justify-center md:justify-start gap-3">
-            <Sparkles className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
+          <div className="flex items-center justify-center md:justify-start md:justify-end gap-3">
+            <Globe className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
             <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Worldwide Secure Express Shipping</span>
           </div>
         </div>

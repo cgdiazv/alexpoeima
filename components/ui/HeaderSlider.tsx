@@ -8,10 +8,10 @@ import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 export interface HeaderSlide {
   id: string;
   image: string;
-  badge: string;
-  title: string;
-  description: string;
-  primaryCta: {
+  badge?: string;
+  title?: string;
+  description?: string;
+  primaryCta?: {
     label: string;
     href: string;
   };
@@ -23,11 +23,15 @@ export interface HeaderSlide {
 
 const DEFAULT_SLIDES: HeaderSlide[] = [
   {
+    id: "home",
+    image: "/headers/header-home.webp",
+  },
+  {
     id: "fine-arts",
     image: "/headers/header-finearts.webp",
-    badge: "Official Studio Collection",
-    title: "Fine Arts & Archival Prints",
-    description: "Explore original paintings, mixed media compositions, and museum-grade Giclée prints crafted with archival precision.",
+    badge: "Originals",
+    title: "Fine Arts & Prints",
+    description: "Explore original paintings and reproductions in my style.",
     primaryCta: {
       label: "Explore Fine Arts",
       href: "/fine-arts-and-prints",
@@ -40,9 +44,9 @@ const DEFAULT_SLIDES: HeaderSlide[] = [
   {
     id: "commissions",
     image: "/headers/header-commisions.webp",
-    badge: "Bespoke Masterpieces",
-    title: "Commission an Original Artwork",
-    description: "Collaborate directly with Alexpoeima for custom pet portraits, family figures, landscapes, or tailored architectural canvases.",
+    badge: "Memories on Canvas",
+    title: "COMMISSIONS",
+    description: "Custom Portraits, Pets, bring your ideas to life.",
     primaryCta: {
       label: "Custom Commissions",
       href: "/commissions",
@@ -57,13 +61,9 @@ const DEFAULT_SLIDES: HeaderSlide[] = [
     image: "/headers/header-liveevents.webp",
     badge: "Live Performance Art",
     title: "Live Painting for Luxury Events",
-    description: "Preserve once-in-a-lifetime moments on canvas. Watch a master painting unfold live during weddings, galas, and celebrations.",
+    description: "Weddings, Celebrations, watch a Once-in-a-lifetime moment unfold on canvas.",
     primaryCta: {
-      label: "Live Event Services",
-      href: "/live-events",
-    },
-    secondaryCta: {
-      label: "Check Date Availability",
+      label: "Book now / check dates",
       href: "/live-events",
     },
   },
@@ -153,6 +153,7 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
       {/* Slides */}
       {slides.map((slide, index) => {
         const isActive = index === currentIndex;
+        const hasContent = Boolean(slide.badge || slide.title || slide.description || slide.primaryCta);
 
         return (
           <div
@@ -166,7 +167,7 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
             <div className="absolute inset-0 overflow-hidden">
               <Image
                 src={slide.image}
-                alt={slide.title}
+                alt={slide.title || "Alexpoeima artwork"}
                 fill
                 priority={index === 0}
                 className={`object-cover object-center transition-transform duration-[7000ms] ease-out ${
@@ -175,66 +176,82 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
                 sizes="100vw"
                 quality={90}
               />
-              {/* Refined multi-stop gradient overlay for maximum readability and luxury depth */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/30" />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
+              {/* Subtle gradient overlay for readability when content is present */}
+              {hasContent ? (
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-black/20" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/15 to-transparent" />
+                </>
+              ) : (
+                <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
+              )}
             </div>
 
             {/* Slide Content */}
-            <div className="relative z-20 h-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col justify-center items-start">
-              <div className="max-w-2xl text-left space-y-4 sm:space-y-6">
-                {/* Badge */}
-                <div
-                  className={`inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#decf92]/20 border border-[#decf92]/50 text-[#f5ebd2] backdrop-blur-md text-xs font-bold uppercase tracking-widest transition-all duration-700 delay-100 ${
-                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                  }`}
-                >
-                  <span>{slide.badge}</span>
-                </div>
-
-                {/* Title */}
-                <h1
-                  className={`text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] drop-shadow-sm transition-all duration-700 delay-200 ${
-                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                  }`}
-                >
-                  {slide.title}
-                </h1>
-
-                {/* Description */}
-                <p
-                  className={`text-sm sm:text-base md:text-lg text-zinc-200/90 font-normal leading-relaxed max-w-xl drop-shadow transition-all duration-700 delay-300 ${
-                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                  }`}
-                >
-                  {slide.description}
-                </p>
-
-                {/* Actions */}
-                <div
-                  className={`flex flex-wrap items-center gap-3.5 pt-2 transition-all duration-700 delay-400 ${
-                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                  }`}
-                >
-                  <Link
-                    href={slide.primaryCta.href}
-                    className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#9e8b43] hover:bg-[#8a7833] text-white font-bold text-sm tracking-wide shadow-lg shadow-black/30 hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0"
-                  >
-                    <span>{slide.primaryCta.label}</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </Link>
-
-                  {slide.secondaryCta && (
-                    <Link
-                      href={slide.secondaryCta.href}
-                      className="inline-flex items-center gap-2 px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm tracking-wide backdrop-blur-md border border-white/20 hover:border-white/40 transition-all duration-200"
+            {hasContent && (
+              <div className="relative z-20 h-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col justify-center items-start">
+                <div className="max-w-2xl text-left space-y-4 sm:space-y-6">
+                  {/* Badge */}
+                  {slide.badge && (
+                    <div
+                      className={`inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#decf92]/20 border border-[#decf92]/50 text-[#f5ebd2] backdrop-blur-md text-xs font-bold uppercase tracking-widest transition-all duration-700 delay-100 ${
+                        isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                      }`}
                     >
-                      <span>{slide.secondaryCta.label}</span>
-                    </Link>
+                      <span>{slide.badge}</span>
+                    </div>
+                  )}
+
+                  {/* Title */}
+                  {slide.title && (
+                    <h1
+                      className={`text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] drop-shadow-sm transition-all duration-700 delay-200 ${
+                        isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                      }`}
+                    >
+                      {slide.title}
+                    </h1>
+                  )}
+
+                  {/* Description */}
+                  {slide.description && (
+                    <p
+                      className={`text-sm sm:text-base md:text-lg text-zinc-200/90 font-normal leading-relaxed max-w-xl drop-shadow transition-all duration-700 delay-300 ${
+                        isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                      }`}
+                    >
+                      {slide.description}
+                    </p>
+                  )}
+
+                  {/* Actions */}
+                  {slide.primaryCta && (
+                    <div
+                      className={`flex flex-wrap items-center gap-3 pt-1 transition-all duration-700 delay-400 ${
+                        isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                      }`}
+                    >
+                      <Link
+                        href={slide.primaryCta.href}
+                        className="inline-flex items-center gap-1.5 px-4 py-2 sm:px-4.5 sm:py-2.5 rounded-lg bg-[#9e8b43] hover:bg-[#8a7833] text-white font-semibold text-xs sm:text-sm tracking-wide shadow-md shadow-black/20 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0"
+                      >
+                        <span>{slide.primaryCta.label}</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </Link>
+
+                      {slide.secondaryCta && (
+                        <Link
+                          href={slide.secondaryCta.href}
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium text-xs sm:text-sm tracking-wide backdrop-blur-md border border-white/20 hover:border-white/40 transition-all duration-200"
+                        >
+                          <span>{slide.secondaryCta.label}</span>
+                        </Link>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
-            </div>
+            )}
           </div>
         );
       })}
