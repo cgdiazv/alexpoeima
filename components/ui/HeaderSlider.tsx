@@ -26,62 +26,6 @@ const DEFAULT_SLIDES: HeaderSlide[] = [
     id: "home",
     image: "/headers/header-home.webp",
   },
-  {
-    id: "fine-arts",
-    image: "/headers/header-finearts.webp",
-    badge: "Originals",
-    title: "Fine Arts & Prints",
-    description: "Explore original paintings and reproductions in my style.",
-    primaryCta: {
-      label: "Explore Fine Arts",
-      href: "/fine-arts-and-prints",
-    },
-    secondaryCta: {
-      label: "View All Artworks",
-      href: "/products",
-    },
-  },
-  {
-    id: "commissions",
-    image: "/headers/header-commisions.webp",
-    badge: "Memories on Canvas",
-    title: "COMMISSIONS",
-    description: "Custom Portraits, Pets, bring your ideas to life.",
-    primaryCta: {
-      label: "Custom Commissions",
-      href: "/commissions",
-    },
-    secondaryCta: {
-      label: "Pricing Calculator",
-      href: "/commissions",
-    },
-  },
-  {
-    id: "live-events",
-    image: "/headers/header-liveevents.webp",
-    badge: "Live Performance Art",
-    title: "Live Painting for Luxury Events",
-    description: "Weddings, Celebrations, watch a Once-in-a-lifetime moment unfold on canvas.",
-    primaryCta: {
-      label: "Book now / check dates",
-      href: "/live-events",
-    },
-  },
-  {
-    id: "contact",
-    image: "/headers/header-contact.webp",
-    badge: "Private Inquiries",
-    title: "Connect With Alexpoeima",
-    description: "Get in touch for custom dimensions, private gallery consultations, international shipping, or bespoke collaborations.",
-    primaryCta: {
-      label: "Contact Studio",
-      href: "/contact",
-    },
-    secondaryCta: {
-      label: "About the Artist",
-      href: "/about",
-    },
-  },
 ];
 
 export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide[] }) {

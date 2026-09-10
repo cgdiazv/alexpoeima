@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import Image from "next/image";
 import { CheckCircle2, Clock, ShieldCheck, Send, PawPrint, User, Image as ImageIcon, Sparkles, Ruler, Calculator } from "lucide-react";
 
 interface CanvasSize {
@@ -178,17 +179,31 @@ export default function CommissionsPage() {
   return (
     <main className="flex-1 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
       {/* Hero Section */}
-      <section className="py-16 md:py-24 border-b border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-950">
-        <div className="max-w-5xl mx-auto px-6 text-center space-y-4">
-          <span className="inline-flex items-center px-3.5 py-1 text-xs font-semibold uppercase tracking-wider text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/50 rounded-full border border-amber-200 dark:border-amber-900">
-            Bespoke Fine Art & Portraits
-          </span>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">
-            Commission a Unique Masterpiece
-          </h1>
-          <p className="text-base md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-normal leading-relaxed">
-            Collaborate directly with Alexpoeima for custom Pet Portraits, family figures, landscapes, or original fine art canvases. Select your dimensions below for instant price estimates.
-          </p>
+      <section className="relative w-full h-[380px] sm:h-[440px] md:h-[500px] overflow-hidden bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800">
+        {/* unoptimized: Next's optimizer re-encodes these header webps incorrectly */}
+        <Image
+          src="/headers/header-commissions.webp"
+          alt="Commissions"
+          fill
+          priority
+          unoptimized
+          className="object-cover object-center"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/15 to-transparent" />
+        <div className="relative z-10 h-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col justify-center items-start">
+          <div className="max-w-2xl text-left space-y-4 sm:space-y-6">
+            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#decf92]/20 border border-[#decf92]/50 text-[#f5ebd2] backdrop-blur-md text-xs font-bold uppercase tracking-widest">
+              Memories on Canvas
+            </span>
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] drop-shadow-sm">
+              COMMISSIONS
+            </h1>
+            <p className="text-sm sm:text-base md:text-lg text-zinc-200/90 font-normal leading-relaxed max-w-xl drop-shadow">
+              Custom Portraits, Pets, bring your ideas to life.
+            </p>
+          </div>
         </div>
       </section>
 
