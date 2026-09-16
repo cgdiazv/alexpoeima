@@ -122,7 +122,7 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
 
   return (
     <div
-      className="relative w-full aspect-[16/9] min-h-[240px] sm:min-h-[380px] md:min-h-[480px] max-h-[720px] overflow-hidden bg-white select-none"
+      className="relative w-full aspect-[16/9] min-h-[240px] sm:min-h-[380px] md:min-h-[480px] max-h-[720px] overflow-hidden bg-white select-none border-b border-zinc-200 dark:border-zinc-800"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}

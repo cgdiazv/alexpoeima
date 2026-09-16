@@ -2,7 +2,6 @@ import { pradoClient } from "@/lib/prado";
 import { ProductCard } from "@/components/product/ProductCard";
 import Link from "next/link";
 import Image from "next/image";
-import { ShieldCheck, Globe, Filter } from "lucide-react";
 
 export const revalidate = 60;
 
@@ -46,20 +45,6 @@ export default async function FineArtsAndPrintsPage() {
             <p className="text-sm sm:text-base md:text-lg text-zinc-200/90 font-normal leading-relaxed max-w-xl drop-shadow">
               Explore original paintings and reproductions in my style.
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Value Badges */}
-      <section className="py-8 bg-zinc-100/70 dark:bg-zinc-900/80 border-b border-zinc-200 dark:border-zinc-800">
-        <div className="max-w-4xl mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-6 text-center md:text-left">
-          <div className="flex items-center justify-center md:justify-start gap-3">
-            <ShieldCheck className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
-            <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Certificate of Authenticity Included</span>
-          </div>
-          <div className="flex items-center justify-center md:justify-start md:justify-end gap-3">
-            <Globe className="w-5 h-5 text-amber-600 dark:text-amber-400 flex-shrink-0" />
-            <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Worldwide Secure Express Shipping</span>
           </div>
         </div>
       </section>
