@@ -7,7 +7,7 @@ import { CheckCircle2, Clock, ShieldCheck, Send, PawPrint, User, Image as ImageI
 interface CanvasSize {
   id: string;
   label: string;
-  cm: string;
+  inches: string;
   title: string;
   desc: string;
   basePrice: number | null;
@@ -17,41 +17,41 @@ interface CanvasSize {
 const CANVAS_SIZES: CanvasSize[] = [
   {
     id: "12x16",
-    label: '12" × 16"',
-    cm: "30 × 40 cm",
+    label: "30 × 40 cm",
+    inches: '12" × 16"',
     title: "Small / Accent",
     desc: "Ideal for single pet portraits or cozy spaces",
-    basePrice: 450,
+    basePrice: 100,
   },
   {
     id: "18x24",
-    label: '18" × 24"',
-    cm: "45 × 60 cm",
+    label: "40 × 50 cm",
+    inches: '18" × 24"',
     title: "Classic Canvas",
-    desc: "Most popular choice for home portraits & fine art",
-    basePrice: 750,
+    desc: "Ideal size for pet or human portraits​",
+    basePrice: 150,
     popular: true,
   },
   {
     id: "24x36",
-    label: '24" × 36"',
-    cm: "60 × 90 cm",
+    label: "50 × 60 cm",
+    inches: '24" × 36"',
     title: "Gallery Statement",
-    desc: "High-impact centerpiece for living rooms or offices",
-    basePrice: 1250,
+    desc: "Most Popular choice for Home & Human portraits",
+    basePrice: 1200,
   },
   {
     id: "36x48",
-    label: '36" × 48"',
-    cm: "90 × 120 cm",
+    label: "60 × 80 cm",
+    inches: '36" × 48"',
     title: "Grand Masterpiece",
-    desc: "Commanding large-scale original oil canvas",
-    basePrice: 2200,
+    desc: "High-Impact centerpiece for living rooms or offices​",
+    basePrice: 260,
   },
   {
     id: "custom",
     label: "Custom Size",
-    cm: "Bespoke Dimensions",
+    inches: "Bespoke Dimensions",
     title: "Custom Dimension",
     desc: "Tailored to your specific architectural space requirements",
     basePrice: null,
@@ -75,7 +75,7 @@ export default function CommissionsPage() {
   const [customWidth, setCustomWidth] = useState("30");
   const [customHeight, setCustomHeight] = useState("40");
   const [petCount, setPetCount] = useState("1");
-  
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -101,14 +101,14 @@ export default function CommissionsPage() {
       }
     } else if (sizeObj && sizeObj.basePrice) {
       price = sizeObj.basePrice;
-      sizeLabel = sizeObj.label;
+      sizeLabel = `${sizeObj.label} (${sizeObj.inches})`;
     }
 
     // Additional pet surcharge if pet portrait
     let petSurcharge = 0;
     if (projectType === "Pet Portrait") {
-      if (petCount === "2") petSurcharge = 150;
-      if (petCount === "3+") petSurcharge = 300;
+      if (petCount === "2") petSurcharge = 50;
+      if (petCount === "3+") petSurcharge = 150;
     }
 
     const totalPrice = price > 0 ? price + petSurcharge : 0;
@@ -125,10 +125,13 @@ export default function CommissionsPage() {
     e.preventDefault();
     setSending(true);
 
+    const sizeObj = CANVAS_SIZES.find((s) => s.id === selectedSizeId);
     const sizeText =
       selectedSizeId === "custom"
         ? `Custom (${customWidth}" x ${customHeight}")`
-        : CANVAS_SIZES.find((s) => s.id === selectedSizeId)?.label || selectedSizeId;
+        : sizeObj
+          ? `${sizeObj.label} (${sizeObj.inches})`
+          : selectedSizeId;
 
     const priceText =
       calculatedPricing.totalPrice > 0
@@ -306,7 +309,7 @@ export default function CommissionsPage() {
               <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" strokeWidth={1} />
               <div>
                 <strong className="block text-zinc-900 dark:text-zinc-100">Typical Lead Time</strong>
-                <span className="text-zinc-600 dark:text-zinc-400">3 to 6 weeks depending on size and drying schedule.</span>
+                <span className="text-zinc-600 dark:text-zinc-400">2 to 3 weeks depending on size and drying schedule, plus shipping time.</span>
               </div>
             </div>
 
@@ -314,7 +317,7 @@ export default function CommissionsPage() {
               <ShieldCheck className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" strokeWidth={1} />
               <div>
                 <strong className="block text-zinc-900 dark:text-zinc-100">50/50 Payment Terms</strong>
-                <span className="text-zinc-600 dark:text-zinc-400">50% deposit upon sketch approval, remaining 50% prior to final delivery.</span>
+                <span className="text-zinc-600 dark:text-zinc-400">50% deposit to begin painting, remaining 50% prior to delivery.</span>
               </div>
             </div>
           </div>
@@ -352,11 +355,10 @@ export default function CommissionsPage() {
                         key={type.id}
                         type="button"
                         onClick={() => setProjectType(type.id)}
-                        className={`p-3.5 rounded-xl text-left border transition-all flex items-start gap-3 ${
-                          isSelected
-                            ? "border-amber-600 bg-amber-50/50 dark:bg-amber-950/40 dark:border-amber-500 ring-1 ring-amber-500"
-                            : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:border-zinc-300 dark:hover:border-zinc-700"
-                        }`}
+                        className={`p-3.5 rounded-xl text-left border transition-all flex items-start gap-3 ${isSelected
+                          ? "border-amber-600 bg-amber-50/50 dark:bg-amber-950/40 dark:border-amber-500 ring-1 ring-amber-500"
+                          : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:border-zinc-300 dark:hover:border-zinc-700"
+                          }`}
                       >
                         <IconComp className={`w-5 h-5 mt-0.5 flex-shrink-0 ${isSelected ? "text-amber-600 dark:text-amber-400" : "text-zinc-400"}`} strokeWidth={1} />
                         <div>
@@ -377,18 +379,17 @@ export default function CommissionsPage() {
                     <div className="flex gap-3">
                       {[
                         { value: "1", label: "1 Pet (Included)" },
-                        { value: "2", label: "2 Pets (+$150)" },
-                        { value: "3+", label: "3+ Pets (+$300)" },
+                        { value: "2", label: "2 Pets (+$50)" },
+                        { value: "3+", label: "3+ Pets (+$150)" },
                       ].map((opt) => (
                         <button
                           key={opt.value}
                           type="button"
                           onClick={() => setPetCount(opt.value)}
-                          className={`px-4 py-2 rounded-lg text-xs font-medium border transition-colors ${
-                            petCount === opt.value
-                              ? "bg-amber-600 text-white border-amber-600 font-semibold"
-                              : "bg-white dark:bg-zinc-950 border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300"
-                          }`}
+                          className={`px-4 py-2 rounded-lg text-xs font-medium border transition-colors ${petCount === opt.value
+                            ? "bg-amber-600 text-white border-amber-600 font-semibold"
+                            : "bg-white dark:bg-zinc-950 border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300"
+                            }`}
                         >
                           {opt.label}
                         </button>
@@ -415,11 +416,10 @@ export default function CommissionsPage() {
                         key={size.id}
                         type="button"
                         onClick={() => setSelectedSizeId(size.id)}
-                        className={`relative p-4 rounded-xl text-left border transition-all ${
-                          isSelected
-                            ? "border-amber-600 bg-amber-50/50 dark:bg-amber-950/40 dark:border-amber-500 ring-1 ring-amber-500"
-                            : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:border-zinc-300 dark:hover:border-zinc-700"
-                        }`}
+                        className={`relative p-4 rounded-xl text-left border transition-all ${isSelected
+                          ? "border-amber-600 bg-amber-50/50 dark:bg-amber-950/40 dark:border-amber-500 ring-1 ring-amber-500"
+                          : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:border-zinc-300 dark:hover:border-zinc-700"
+                          }`}
                       >
                         {size.popular && (
                           <span className="absolute top-2 right-2 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-600 text-white rounded-full">
@@ -432,7 +432,7 @@ export default function CommissionsPage() {
                             {size.basePrice ? `$${size.basePrice}` : "Custom"}
                           </span>
                         </div>
-                        <div className="text-xs text-zinc-500 dark:text-zinc-400">{size.cm}</div>
+                        <div className="text-xs text-zinc-500 dark:text-zinc-400">{size.inches}</div>
                         <div className="text-xs text-zinc-600 dark:text-zinc-400 font-medium mt-1">{size.desc}</div>
                       </button>
                     );
