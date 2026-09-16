@@ -3,28 +3,56 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export interface HeaderSlide {
   id: string;
   image: string;
-  badge?: string;
-  title?: string;
-  description?: string;
-  primaryCta?: {
-    label: string;
-    href: string;
-  };
-  secondaryCta?: {
-    label: string;
-    href: string;
-  };
+  text?: string;
+  position?: "center" | "right" | "lower-center";
+  href?: string;
 }
 
-const DEFAULT_SLIDES: HeaderSlide[] = [
+export const DEFAULT_SLIDES: HeaderSlide[] = [
   {
     id: "home",
     image: "/headers/header-home.webp",
+    href: "/about",
+  },
+  {
+    id: "discover",
+    image: "/headers/header-discover.webp",
+    text: "Discover",
+    position: "center",
+    href: "/fine-arts-and-prints",
+  },
+  {
+    id: "fine-arts",
+    image: "/headers/header-finearts.webp",
+    text: "Fine art",
+    position: "center",
+    href: "/fine-arts-and-prints",
+  },
+  {
+    id: "exclusive",
+    image: "/headers/header-exclusive.webp",
+    text: "Exclusive art pieces",
+    position: "center",
+    href: "/fine-arts-and-prints",
+  },
+  {
+    id: "commissions",
+    image: "/headers/header-commissions.webp",
+    text: "Comissions",
+    position: "center",
+    href: "/commissions",
+  },
+  {
+    id: "live-events",
+    image: "/headers/header-liveevvents.webp",
+    text: "Live Events and more",
+    position: "center",
+    href: "/live-events",
   },
 ];
 
@@ -33,6 +61,7 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
+  const hasSwiped = useRef(false);
 
   const totalSlides = slides.length;
 
@@ -54,7 +83,7 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
 
     const timer = setInterval(() => {
       nextSlide();
-    }, 6000);
+    }, 5500);
 
     return () => clearInterval(timer);
   }, [nextSlide, isPaused, totalSlides]);
@@ -62,6 +91,7 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
   // Touch swipe support for mobile
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.targetTouches[0].clientX;
+    hasSwiped.current = false;
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
@@ -71,11 +101,13 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
   const handleTouchEnd = () => {
     if (touchStartX.current === null || touchEndX.current === null) return;
     const diff = touchStartX.current - touchEndX.current;
-    const swipeThreshold = 50; // minimum distance in px to register a swipe
+    const swipeThreshold = 50;
 
     if (diff > swipeThreshold) {
+      hasSwiped.current = true;
       nextSlide();
     } else if (diff < -swipeThreshold) {
+      hasSwiped.current = true;
       prevSlide();
     }
 
@@ -83,9 +115,14 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
     touchEndX.current = null;
   };
 
+  const aboretoStyle = {
+    fontFamily: 'var(--font-aboreto), "Aboreto", serif, cursive',
+    textShadow: "0 2px 8px rgba(0,0,0,0.85), 0 4px 20px rgba(0,0,0,0.6)",
+  };
+
   return (
     <div
-      className="relative w-full h-[520px] sm:h-[600px] md:h-[650px] lg:h-[700px] overflow-hidden bg-zinc-950 select-none"
+      className="relative w-full aspect-[16/9] min-h-[240px] sm:min-h-[380px] md:min-h-[480px] max-h-[720px] overflow-hidden bg-white select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
@@ -97,7 +134,55 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
       {/* Slides */}
       {slides.map((slide, index) => {
         const isActive = index === currentIndex;
-        const hasContent = Boolean(slide.badge || slide.title || slide.description || slide.primaryCta);
+
+        // Determine content positioning
+        let positionClasses = "justify-center items-center text-center px-6";
+        if (slide.position === "right") {
+          positionClasses =
+            "justify-end items-center pr-8 sm:pr-16 md:pr-24 lg:pr-36 xl:pr-48 text-right px-6";
+        } else if (slide.position === "lower-center") {
+          positionClasses =
+            "justify-center items-center pt-24 sm:pt-32 md:pt-40 lg:pt-48 text-center px-6";
+        }
+
+        const slideInner = (
+          <>
+            {/* Background Artwork Image */}
+            <div className="absolute inset-0 overflow-hidden">
+              <Image
+                src={slide.image}
+                alt={slide.text || "Alexpoeima artwork"}
+                fill
+                priority={index === 0}
+                className={`object-cover object-center transition-transform duration-[7000ms] ease-out ${
+                  isActive ? "scale-105" : "scale-100"
+                }`}
+                sizes="100vw"
+                quality={90}
+              />
+              {/* Subtle ambient gradient overlay for slides with text to preserve readability */}
+              {slide.text && (
+                <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/10" />
+              )}
+            </div>
+
+            {/* Slide Text Content */}
+            {slide.text && (
+              <div
+                className={`relative z-20 h-full w-full max-w-7xl mx-auto flex ${positionClasses}`}
+              >
+                <h2
+                  style={aboretoStyle}
+                  className={`text-white text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-wider sm:tracking-widest transition-all duration-700 delay-150 ${
+                    isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
+                  }`}
+                >
+                  {slide.text}
+                </h2>
+              </div>
+            )}
+          </>
+        );
 
         return (
           <div
@@ -107,94 +192,22 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
             }`}
             aria-hidden={!isActive}
           >
-            {/* Background Artwork Image */}
-            <div className="absolute inset-0 overflow-hidden">
-              <Image
-                src={slide.image}
-                alt={slide.title || "Alexpoeima artwork"}
-                fill
-                priority={index === 0}
-                className={`object-cover object-center transition-transform duration-[7000ms] ease-out ${
-                  isActive ? "scale-105" : "scale-100"
-                }`}
-                sizes="100vw"
-                quality={90}
-              />
-              {/* Subtle gradient overlay for readability when content is present */}
-              {hasContent ? (
-                <>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-black/20" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/15 to-transparent" />
-                </>
-              ) : (
-                <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-transparent" />
-              )}
-            </div>
-
-            {/* Slide Content */}
-            {hasContent && (
-              <div className="relative z-20 h-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col justify-center items-start">
-                <div className="max-w-2xl text-left space-y-4 sm:space-y-6">
-                  {/* Badge */}
-                  {slide.badge && (
-                    <div
-                      className={`inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#decf92]/20 border border-[#decf92]/50 text-[#f5ebd2] backdrop-blur-md text-xs font-bold uppercase tracking-widest transition-all duration-700 delay-100 ${
-                        isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                      }`}
-                    >
-                      <span>{slide.badge}</span>
-                    </div>
-                  )}
-
-                  {/* Title */}
-                  {slide.title && (
-                    <h1
-                      className={`text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] drop-shadow-sm transition-all duration-700 delay-200 ${
-                        isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                      }`}
-                    >
-                      {slide.title}
-                    </h1>
-                  )}
-
-                  {/* Description */}
-                  {slide.description && (
-                    <p
-                      className={`text-sm sm:text-base md:text-lg text-zinc-200/90 font-normal leading-relaxed max-w-xl drop-shadow transition-all duration-700 delay-300 ${
-                        isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                      }`}
-                    >
-                      {slide.description}
-                    </p>
-                  )}
-
-                  {/* Actions */}
-                  {slide.primaryCta && (
-                    <div
-                      className={`flex flex-wrap items-center gap-3 pt-1 transition-all duration-700 delay-400 ${
-                        isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-                      }`}
-                    >
-                      <Link
-                        href={slide.primaryCta.href}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 sm:px-4.5 sm:py-2.5 rounded-lg bg-[#9e8b43] hover:bg-[#8a7833] text-white font-semibold text-xs sm:text-sm tracking-wide shadow-md shadow-black/20 hover:shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0"
-                      >
-                        <span>{slide.primaryCta.label}</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </Link>
-
-                      {slide.secondaryCta && (
-                        <Link
-                          href={slide.secondaryCta.href}
-                          className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-medium text-xs sm:text-sm tracking-wide backdrop-blur-md border border-white/20 hover:border-white/40 transition-all duration-200"
-                        >
-                          <span>{slide.secondaryCta.label}</span>
-                        </Link>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </div>
+            {slide.href ? (
+              <Link
+                href={slide.href}
+                onClick={(e) => {
+                  if (hasSwiped.current) {
+                    e.preventDefault();
+                  }
+                }}
+                className="relative block w-full h-full group cursor-pointer"
+                tabIndex={isActive ? 0 : -1}
+                aria-label={slide.text || "View artwork"}
+              >
+                {slideInner}
+              </Link>
+            ) : (
+              <div className="relative w-full h-full">{slideInner}</div>
             )}
           </div>
         );
@@ -203,37 +216,46 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
       {/* Navigation Arrows */}
       <button
         type="button"
-        onClick={prevSlide}
-        className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 z-30 p-2.5 sm:p-3 rounded-full bg-black/30 hover:bg-black/60 text-white/90 hover:text-white backdrop-blur-md border border-white/10 hover:border-white/30 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#decf92]"
+        onClick={(e) => {
+          e.stopPropagation();
+          prevSlide();
+        }}
+        className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 rounded-full bg-black/35 hover:bg-black/65 text-white/90 hover:text-white backdrop-blur-md border border-white/20 hover:border-white/40 shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#decf92]"
         aria-label="Previous slide"
       >
-        <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+        <ChevronLeft className="w-4 h-4 sm:w-6 sm:h-6" />
       </button>
 
       <button
         type="button"
-        onClick={nextSlide}
-        className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 z-30 p-2.5 sm:p-3 rounded-full bg-black/30 hover:bg-black/60 text-white/90 hover:text-white backdrop-blur-md border border-white/10 hover:border-white/30 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#decf92]"
+        onClick={(e) => {
+          e.stopPropagation();
+          nextSlide();
+        }}
+        className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-30 p-2 sm:p-3 rounded-full bg-black/35 hover:bg-black/65 text-white/90 hover:text-white backdrop-blur-md border border-white/20 hover:border-white/40 shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#decf92]"
         aria-label="Next slide"
       >
-        <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+        <ChevronRight className="w-4 h-4 sm:w-6 sm:h-6" />
       </button>
 
       {/* Bottom Pagination Indicators */}
-      <div className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2.5 px-4 py-2 rounded-full bg-black/30 backdrop-blur-md border border-white/10">
+      <div className="absolute bottom-4 sm:bottom-7 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/35 backdrop-blur-md border border-white/15 shadow-md">
         {slides.map((slide, index) => {
           const isActive = index === currentIndex;
           return (
             <button
               key={slide.id}
               type="button"
-              onClick={() => goToSlide(index)}
+              onClick={(e) => {
+                e.stopPropagation();
+                goToSlide(index);
+              }}
               className={`transition-all duration-300 rounded-full focus:outline-none ${
                 isActive
-                  ? "w-8 h-2 bg-[#decf92]"
-                  : "w-2 h-2 bg-white/40 hover:bg-white/70"
+                  ? "w-6 sm:w-8 h-1.5 sm:h-2 bg-[#decf92]"
+                  : "w-1.5 sm:w-2 h-1.5 sm:h-2 bg-white/50 hover:bg-white/80"
               }`}
-              aria-label={`Go to slide ${index + 1}: ${slide.title}`}
+              aria-label={`Go to slide ${index + 1}${slide.text ? `: ${slide.text}` : ""}`}
               aria-current={isActive ? "true" : "false"}
             />
           );
@@ -242,3 +264,4 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
     </div>
   );
 }
+

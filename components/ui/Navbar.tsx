@@ -61,7 +61,13 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-40 w-full border-b border-zinc-200 bg-white/90 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/90">
+    <nav
+      style={{
+        fontFamily:
+          '"Aauxx", "Aaux", "Aaux Next", "Aaux Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+      }}
+      className="font-aaux uppercase tracking-wider sticky top-0 z-40 w-full border-b border-zinc-200 bg-white/90 backdrop-blur-md dark:border-zinc-800 dark:bg-zinc-950/90"
+    >
       <div className="mx-auto flex max-w-7xl items-center justify-between p-4 sm:px-6 lg:px-8">
         <div className="flex items-center space-x-8">
           <Link href="/" className="flex items-center">
@@ -81,9 +87,9 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`text-sm font-medium transition-colors ${
+                  className={`text-xs font-semibold tracking-wider uppercase transition-colors ${
                     isActive
-                      ? "text-black font-semibold dark:text-white underline underline-offset-4"
+                      ? "text-black dark:text-white underline underline-offset-4"
                       : "text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white"
                   }`}
                 >
@@ -98,7 +104,7 @@ export function Navbar() {
           {loggedIn ? (
             <Link
               href="/account"
-              className="flex items-center space-x-1.5 text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors"
+              className="flex items-center space-x-1.5 text-xs font-semibold tracking-wider uppercase text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors"
             >
               <User className="w-5 h-5" strokeWidth={0.75} />
               <span className="hidden sm:inline">Account</span>
@@ -106,7 +112,7 @@ export function Navbar() {
           ) : (
             <Link
               href="/login"
-              className="flex items-center space-x-1.5 text-sm font-medium text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors"
+              className="flex items-center space-x-1.5 text-xs font-semibold tracking-wider uppercase text-gray-700 hover:text-black dark:text-gray-300 dark:hover:text-white transition-colors"
             >
               <User className="w-5 h-5" strokeWidth={0.75} />
               <span className="hidden sm:inline">Login</span>
@@ -149,7 +155,11 @@ export function Navbar() {
 
             {/* Solid Opaque Sliding Drawer */}
             <div
-              className={`fixed top-0 left-0 bottom-0 h-screen w-[85%] max-w-sm z-[102] bg-white dark:bg-zinc-950 p-6 flex flex-col justify-between shadow-2xl transition-transform duration-300 ease-in-out border-r border-zinc-200 dark:border-zinc-800 ${
+              style={{
+                fontFamily:
+                  '"Aauxx", "Aaux", "Aaux Next", "Aaux Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+              }}
+              className={`font-aaux fixed top-0 left-0 bottom-0 h-screen w-[85%] max-w-sm z-[102] bg-white dark:bg-zinc-950 p-6 flex flex-col justify-between shadow-2xl transition-transform duration-300 ease-in-out border-r border-zinc-200 dark:border-zinc-800 ${
                 mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
               }`}
             >
@@ -175,7 +185,7 @@ export function Navbar() {
                 </div>
 
                 {/* Navigation Links */}
-                <div className="flex flex-col space-y-3">
+                <div className="flex flex-col space-y-3 uppercase tracking-wider">
                   {navLinks.map((link) => {
                     const isActive = pathname === link.href;
                     return (
@@ -183,9 +193,9 @@ export function Navbar() {
                         key={link.href}
                         href={link.href}
                         onClick={() => setMobileMenuOpen(false)}
-                        className={`px-3 py-2.5 rounded-lg text-base font-medium transition-colors ${
+                        className={`px-3 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
                           isActive
-                            ? "bg-zinc-100 dark:bg-zinc-900 text-black dark:text-white font-semibold"
+                            ? "bg-zinc-100 dark:bg-zinc-900 text-black dark:text-white"
                             : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-900/50 hover:text-black dark:hover:text-white"
                         }`}
                       >
@@ -197,12 +207,12 @@ export function Navbar() {
               </div>
 
               {/* Drawer Footer */}
-              <div className="pt-6 border-t border-gray-200 dark:border-gray-800 space-y-4">
+              <div className="pt-6 border-t border-gray-200 dark:border-gray-800 space-y-4 uppercase tracking-wider">
                 {loggedIn ? (
                   <Link
                     href="/account"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white"
+                    className="flex items-center space-x-2 px-3 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white"
                   >
                     <User className="w-4 h-4" strokeWidth={0.75} />
                     <span>My Account</span>
@@ -211,13 +221,13 @@ export function Navbar() {
                   <Link
                     href="/login"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center space-x-2 px-3 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white"
+                    className="flex items-center space-x-2 px-3 py-2 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-black dark:hover:text-white"
                   >
                     <User className="w-4 h-4" strokeWidth={0.75} />
                     <span>Sign In / Register</span>
                   </Link>
                 )}
-                <p className="text-xs text-zinc-400 px-3">&copy; {new Date().getFullYear()} Alexpoeima Art</p>
+                <p className="text-[11px] normal-case tracking-normal text-zinc-400 px-3">&copy; {new Date().getFullYear()} Alexpoeima Art</p>
               </div>
             </div>
           </div>,
