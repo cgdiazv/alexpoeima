@@ -27,7 +27,7 @@ export function ProductDetailView({
   product: Product;
 }) {
   const { addItem, currency } = useCart();
-  const images = product.images && product.images.length > 0 ? product.images : ["/next.svg"];
+  const images = product.images && product.images.length > 0 ? product.images : ["/placeholder-art.svg"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
@@ -109,9 +109,15 @@ export function ProductDetailView({
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-white">
               {product.title}
             </h1>
-            <p className="text-2xl font-bold text-zinc-900 dark:text-white mt-4">
-              {formatCurrency(priceNum, currency)}
-            </p>
+            {priceNum > 0 ? (
+              <p className="text-2xl font-bold text-zinc-900 dark:text-white mt-4">
+                {formatCurrency(priceNum, currency)}
+              </p>
+            ) : (
+              <div className="inline-block mt-3 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 text-xs font-bold uppercase tracking-wider">
+                Bespoke Commission
+              </div>
+            )}
           </div>
 
           {/* Variants Selector */}
@@ -141,44 +147,63 @@ export function ProductDetailView({
           {/* Product Description */}
           {product.description && (
             <div className="prose prose-sm dark:prose-invert text-zinc-600 dark:text-zinc-300 leading-relaxed border-t border-b border-zinc-200 dark:border-zinc-800 py-6">
-              <p>{product.description}</p>
+              <p className="whitespace-pre-line">{product.description}</p>
             </div>
           )}
 
-          {/* Quantity & Add to Cart Action */}
-          <div className="space-y-4 pt-2">
-            <label className="text-sm font-semibold text-zinc-900 dark:text-white block">
-              Quantity
-            </label>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center border border-zinc-300 dark:border-zinc-700 rounded-md">
+          {/* Action: Quantity & Add to Cart OR Commission Inquiry */}
+          {priceNum > 0 ? (
+            <div className="space-y-4 pt-2">
+              <label className="text-sm font-semibold text-zinc-900 dark:text-white block">
+                Quantity
+              </label>
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center border border-zinc-300 dark:border-zinc-700 rounded-md">
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    className="px-3.5 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                  >
+                    -
+                  </button>
+                  <span className="px-4 py-2 text-sm font-semibold text-zinc-900 dark:text-white">
+                    {quantity}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((q) => q + 1)}
+                    className="px-3.5 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                  >
+                    +
+                  </button>
+                </div>
+
                 <button
-                  type="button"
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="px-3.5 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                  onClick={handleAddToCart}
+                  className="flex-1 rounded-md bg-[#9e8b43] hover:bg-[#8a7833] text-white px-6 py-3 text-base font-bold shadow-md focus:outline-none transition-colors"
                 >
-                  -
-                </button>
-                <span className="px-4 py-2 text-sm font-semibold text-zinc-900 dark:text-white">
-                  {quantity}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setQuantity((q) => q + 1)}
-                  className="px-3.5 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                >
-                  +
+                  Add to Cart
                 </button>
               </div>
-
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 rounded-md bg-[#9e8b43] hover:bg-[#8a7833] text-white px-6 py-3 text-base font-bold shadow-md focus:outline-none transition-colors"
-              >
-                Add to Cart
-              </button>
             </div>
-          </div>
+          ) : (
+            <div className="space-y-4 pt-2">
+              <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm text-zinc-800 dark:text-zinc-200">
+                <p className="font-semibold text-amber-800 dark:text-amber-300 mb-1">
+                  Commissioned Artwork / Private Collection
+                </p>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400">
+                  This piece was created as an original custom commission. You can request a personalized piece tailored to your vision.
+                </p>
+              </div>
+              <Link
+                href="/commissions"
+                className="block text-center w-full rounded-md bg-[#9e8b43] hover:bg-[#8a7833] text-white px-6 py-3.5 text-base font-bold shadow-md transition-colors"
+              >
+                Inquire for Similar Commission
+              </Link>
+            </div>
+          )}
 
           {/* Assurance badges */}
           <div className="pt-6 grid grid-cols-2 gap-4 text-xs text-zinc-500 dark:text-zinc-400 border-t border-zinc-200 dark:border-zinc-800">

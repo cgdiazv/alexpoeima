@@ -18,16 +18,11 @@ type ProductCardProps = {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addItem, currency } = useCart();
-  const imageUrl = product.images?.[0] || "/next.svg";
+  const imageUrl = product.images?.[0] || "/placeholder-art.svg";
   
   // Prado Commerce variants hold the price
   const priceString = product.variants?.[0]?.price || "0";
-  const priceNum = parseFloat(priceString); // e.g. "1600" -> 1600 (Assuming it's not cents but full amount or cents based on currency)
-
-  // In the previous conversation we troubleshooted that price was passed as string.
-  // We'll format it assuming it is the exact amount e.g. "1600" is $1600.00
-  // Or if it's cents, we should divide by 100.
-  // We'll format it as standard number.
+  const priceNum = parseFloat(priceString);
   const displayPrice = priceNum; 
 
   return (
@@ -49,27 +44,42 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.title}
         </h3>
         <div className="flex flex-1 flex-col justify-end mt-2">
-          <p className="text-base font-medium text-gray-900 dark:text-white">
-            {formatCurrency(displayPrice, currency)}
-          </p>
+          {displayPrice > 0 ? (
+            <p className="text-base font-medium text-gray-900 dark:text-white">
+              {formatCurrency(displayPrice, currency)}
+            </p>
+          ) : (
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#9e8b43] dark:text-[#decf92]">
+              Commission Piece
+            </span>
+          )}
         </div>
       </div>
       <div className="px-4 pb-4 z-20 relative">
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            addItem({
-              id: product.id,
-              name: product.title,
-              price: displayPrice,
-              quantity: 1,
-              image: imageUrl,
-            });
-          }}
-          className="w-full rounded-md bg-[#9e8b43] hover:bg-[#8a7833] px-4 py-2.5 text-sm font-bold text-white shadow transition-colors"
-        >
-          Add to Cart
-        </button>
+        {displayPrice > 0 ? (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              addItem({
+                id: product.id,
+                name: product.title,
+                price: displayPrice,
+                quantity: 1,
+                image: imageUrl,
+              });
+            }}
+            className="w-full rounded-md bg-[#9e8b43] hover:bg-[#8a7833] px-4 py-2.5 text-sm font-bold text-white shadow transition-colors"
+          >
+            Add to Cart
+          </button>
+        ) : (
+          <Link
+            href={`/products/${product.slug}`}
+            className="block text-center w-full rounded-md bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-white px-4 py-2.5 text-sm font-bold text-white shadow transition-colors"
+          >
+            View Details & Story
+          </Link>
+        )}
       </div>
     </div>
   );
