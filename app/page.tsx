@@ -1,7 +1,7 @@
 import { pradoClient } from "@/lib/prado";
 import { ProductCard } from "@/components/product/ProductCard";
 import { HeaderSlider } from "@/components/ui/HeaderSlider";
-import { ShieldCheck, Globe, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export const revalidate = 60; // Revalidate every 60 seconds
@@ -18,20 +18,6 @@ export default async function Home() {
     <main className="w-full bg-white flex flex-col min-h-screen">
       {/* Home Page Header Slider */}
       <HeaderSlider />
-
-      {/* Value Badges Banner */}
-      <section className="py-6 bg-zinc-50 border-b border-zinc-200">
-        <div className="max-w-4xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 gap-6 text-center sm:text-left">
-          <div className="flex items-center justify-center sm:justify-start gap-3">
-            <ShieldCheck className="w-5 h-5 text-[#9e8b43] flex-shrink-0" strokeWidth={1.5} />
-            <span className="text-xs sm:text-sm font-semibold text-zinc-700">Certificate of Authenticity Included</span>
-          </div>
-          <div className="flex items-center justify-center sm:justify-start sm:justify-end gap-3">
-            <Globe className="w-5 h-5 text-[#9e8b43] flex-shrink-0" strokeWidth={1.5} />
-            <span className="text-xs sm:text-sm font-semibold text-zinc-700">Worldwide Secure Express Shipping</span>
-          </div>
-        </div>
-      </section>
 
       {/* Featured Products */}
       <section className="flex-1 py-16 px-6 max-w-7xl mx-auto w-full">

@@ -40,7 +40,13 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black text-zinc-500 dark:text-zinc-400 text-xs py-6 mt-auto">
+    <footer
+      style={{
+        fontFamily:
+          '"Aauxx", "Aaux", "Aaux Next", "Aaux Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+      }}
+      className="font-aaux w-full border-t border-zinc-200 dark:border-zinc-800 bg-white dark:bg-black text-zinc-500 dark:text-zinc-400 text-xs py-6 mt-auto"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         
         {/* Left Side: Copyright notice with links + Powered by */}

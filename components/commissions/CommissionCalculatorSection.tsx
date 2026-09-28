@@ -6,7 +6,7 @@ import { CheckCircle2, Clock, ShieldCheck, Send, PawPrint, User, Image as ImageI
 interface CanvasSize {
   id: string;
   label: string;
-  cm: string;
+  inches: string;
   title: string;
   desc: string;
   basePrice: number | null;
@@ -16,41 +16,41 @@ interface CanvasSize {
 const CANVAS_SIZES: CanvasSize[] = [
   {
     id: "12x16",
-    label: '12" × 16"',
-    cm: "30 × 40 cm",
+    label: "30 × 40 cm",
+    inches: '12" × 16"',
     title: "Small / Accent",
     desc: "Ideal for single pet portraits or cozy spaces",
-    basePrice: 450,
+    basePrice: 100,
   },
   {
     id: "18x24",
-    label: '18" × 24"',
-    cm: "45 × 60 cm",
+    label: "40 × 50 cm",
+    inches: '18" × 24"',
     title: "Classic Canvas",
-    desc: "Most popular choice for home portraits & fine art",
-    basePrice: 750,
+    desc: "Ideal size for pet or human portraits",
+    basePrice: 150,
     popular: true,
   },
   {
     id: "24x36",
-    label: '24" × 36"',
-    cm: "60 × 90 cm",
+    label: "50 × 60 cm",
+    inches: '24" × 36"',
     title: "Gallery Statement",
-    desc: "High-impact centerpiece for living rooms or offices",
-    basePrice: 1250,
+    desc: "Most Popular choice for Home & Human portraits",
+    basePrice: 1200,
   },
   {
     id: "36x48",
-    label: '36" × 48"',
-    cm: "90 × 120 cm",
+    label: "60 × 80 cm",
+    inches: '36" × 48"',
     title: "Grand Masterpiece",
-    desc: "Commanding large-scale original oil canvas",
-    basePrice: 2200,
+    desc: "High-Impact centerpiece for living rooms or offices",
+    basePrice: 260,
   },
   {
     id: "custom",
     label: "Custom Size",
-    cm: "Bespoke Dimensions",
+    inches: "Bespoke Dimensions",
     title: "Custom Dimension",
     desc: "Tailored to your specific architectural space requirements",
     basePrice: null,
@@ -93,14 +93,14 @@ export function CommissionCalculatorSection() {
       const h = parseFloat(customHeight) || 0;
       sizeLabel = w > 0 && h > 0 ? `Custom (${w}" × ${h}")` : "Custom Dimensions";
       if (w > 0 && h > 0) {
-        // ~$1.30 per sq in, minimum $450
-        price = Math.max(450, Math.round(w * h * 1.3));
+        // ~$1.30 per sq in, minimum $150
+        price = Math.max(150, Math.round(w * h * 1.3));
       } else {
         price = 0;
       }
     } else if (sizeObj && sizeObj.basePrice) {
       price = sizeObj.basePrice;
-      sizeLabel = sizeObj.label;
+      sizeLabel = `${sizeObj.label} (${sizeObj.inches})`;
     }
 
     // Additional pet surcharge if pet portrait
@@ -124,10 +124,11 @@ export function CommissionCalculatorSection() {
     e.preventDefault();
     setSending(true);
 
+    const sizeObj = CANVAS_SIZES.find((s) => s.id === selectedSizeId);
     const sizeText =
       selectedSizeId === "custom"
         ? `Custom (${customWidth}" x ${customHeight}")`
-        : CANVAS_SIZES.find((s) => s.id === selectedSizeId)?.label || selectedSizeId;
+        : sizeObj ? `${sizeObj.label} (${sizeObj.inches})` : selectedSizeId;
 
     const priceText =
       calculatedPricing.totalPrice > 0
@@ -328,9 +329,13 @@ export function CommissionCalculatorSection() {
 
             {/* 2. Canvas Size Selection */}
             <div className="space-y-3">
-              <label className="block text-xs font-extrabold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-                2. Select Canvas Dimensions *
-              </label>
+              <div className="flex items-center justify-between">
+                <label className="block text-xs font-extrabold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+                  2. Select Canvas Dimensions *
+                </label>
+                <span className="text-xs text-amber-600 dark:text-amber-400 font-medium">Prices update automatically</span>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {CANVAS_SIZES.map((size) => {
                   const isSelected = selectedSizeId === size.id;
@@ -339,57 +344,59 @@ export function CommissionCalculatorSection() {
                       key={size.id}
                       type="button"
                       onClick={() => setSelectedSizeId(size.id)}
-                      className={`p-3.5 rounded-xl text-left border relative transition-all ${
+                      className={`relative p-4 rounded-xl text-left border transition-all ${
                         isSelected
                           ? "border-amber-600 bg-amber-50/50 dark:bg-amber-950/40 dark:border-amber-500 ring-1 ring-amber-500"
                           : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 hover:border-zinc-300 dark:hover:border-zinc-700"
                       }`}
                     >
                       {size.popular && (
-                        <span className="absolute top-2.5 right-2.5 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-500 text-white">
+                        <span className="absolute top-2 right-2 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-amber-600 text-white rounded-full">
                           Popular
                         </span>
                       )}
-                      <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100">{size.label}</div>
-                      <div className="text-xs text-amber-600 dark:text-amber-400 font-medium">{size.cm}</div>
-                      <div className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">{size.desc}</div>
-                      {size.basePrice && (
-                        <div className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 mt-2">
-                          From ${size.basePrice.toLocaleString()} USD
-                        </div>
-                      )}
+                      <div className="flex items-baseline justify-between mb-1">
+                        <span className="text-base font-extrabold text-zinc-900 dark:text-zinc-50">{size.label}</span>
+                        <span className="text-xs font-bold text-amber-700 dark:text-amber-400">
+                          {size.basePrice ? `$${size.basePrice}` : "Custom"}
+                        </span>
+                      </div>
+                      <div className="text-xs text-zinc-500 dark:text-zinc-400">{size.inches}</div>
+                      <div className="text-xs text-zinc-600 dark:text-zinc-400 font-medium mt-1">{size.desc}</div>
                     </button>
                   );
                 })}
               </div>
 
-              {/* Custom Dimensions Input */}
+              {/* Custom Dimensions Fields if "custom" selected */}
               {selectedSizeId === "custom" && (
-                <div className="mt-4 p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 space-y-3">
-                  <label className="block text-xs font-semibold text-zinc-800 dark:text-zinc-200">
-                    Enter Desired Dimensions (Inches)
-                  </label>
+                <div className="mt-4 p-4 rounded-xl bg-zinc-100 dark:bg-zinc-950 border border-zinc-300 dark:border-zinc-800 space-y-3">
+                  <span className="block text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+                    Specify Custom Canvas Dimensions (Inches)
+                  </span>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <span className="text-[11px] text-zinc-500 dark:text-zinc-400">Width (in)</span>
+                      <label className="block text-[11px] text-zinc-500 mb-1">Width (Inches)</label>
                       <input
                         type="number"
-                        min="10"
+                        min="8"
                         max="120"
                         value={customWidth}
                         onChange={(e) => setCustomWidth(e.target.value)}
-                        className="mt-1 w-full px-3 py-2 text-sm rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                        placeholder="e.g. 30"
+                        className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
                       />
                     </div>
                     <div>
-                      <span className="text-[11px] text-zinc-500 dark:text-zinc-400">Height (in)</span>
+                      <label className="block text-[11px] text-zinc-500 mb-1">Height (Inches)</label>
                       <input
                         type="number"
-                        min="10"
+                        min="8"
                         max="120"
                         value={customHeight}
                         onChange={(e) => setCustomHeight(e.target.value)}
-                        className="mt-1 w-full px-3 py-2 text-sm rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                        placeholder="e.g. 40"
+                        className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm focus:ring-2 focus:ring-amber-500 focus:outline-none"
                       />
                     </div>
                   </div>
@@ -397,91 +404,79 @@ export function CommissionCalculatorSection() {
               )}
             </div>
 
-            {/* 3. Client Contact Info */}
-            <div className="space-y-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
+            {/* 3. Contact Information */}
+            <div className="space-y-4 pt-2 border-t border-zinc-200 dark:border-zinc-800">
               <label className="block text-xs font-extrabold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-                3. Your Contact Information *
+                3. Contact & Delivery Details
               </label>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">
                     Full Name *
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="Jane Doe"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-2.5 text-sm rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    placeholder="Your Name"
+                    className="w-full px-4 py-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm"
                   />
                 </div>
+
                 <div>
-                  <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">
                     Email Address *
                   </label>
                   <input
                     type="email"
                     required
-                    placeholder="jane@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-2.5 text-sm rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    placeholder="you@example.com"
+                    className="w-full px-4 py-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">
-                  Phone Number (Optional)
+                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">
+                  Phone Number
                 </label>
                 <input
                   type="tel"
-                  placeholder="+1 (555) 000-0000"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-4 py-2.5 text-sm rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  placeholder="+1 (555) 000-0000"
+                  className="w-full px-4 py-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">
-                  Tell Alex About Your Vision & Details *
+                <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 mb-2">
+                  Project Vision & Details *
                 </label>
                 <textarea
-                  rows={4}
                   required
-                  placeholder="Describe your subject, pet name/temperament, desired color accents, background atmosphere, or any deadline considerations..."
+                  rows={4}
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-4 py-2.5 text-sm rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  placeholder="Describe your pet/subject, background style, room lighting, or special requests..."
+                  className="w-full px-4 py-3 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:ring-2 focus:ring-amber-500 focus:outline-none text-sm"
                 />
               </div>
             </div>
 
-            {/* Submit Action Button */}
+            {/* Submit Button */}
             <button
               type="submit"
               disabled={sending}
-              className="w-full py-4 px-6 rounded-xl bg-[#9e8b43] hover:bg-[#8a7833] text-white font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all disabled:opacity-50"
+              className="w-full py-4 bg-[#9e8b43] hover:bg-[#8a7833] text-white rounded-xl text-sm font-bold transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {sending ? (
-                <>
-                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  <span>Submitting Inquiry...</span>
-                </>
-              ) : (
-                <>
-                  <Send className="w-4 h-4" />
-                  <span>Request Commission Consultation</span>
-                </>
-              )}
+              <Send className="w-4 h-4" strokeWidth={1} />
+              {sending ? "Submitting Inquiry..." : `Submit Inquiry (${calculatedPricing.totalPrice > 0 ? `$${calculatedPricing.totalPrice.toLocaleString()} USD` : "Custom Quote"})`}
             </button>
-
-            <p className="text-center text-xs text-zinc-500 dark:text-zinc-400">
-              No immediate payment required. You will receive a personal reply with direct consultation and sketch study schedule.
-            </p>
           </form>
         )}
       </div>
