@@ -34,7 +34,7 @@ export function ProductDetailView({
   product: Product;
 }) {
   const { addItem, currency } = useCart();
-  const images = product.images && product.images.length > 0 ? product.images : ["/next.svg"];
+  const images = product.images && product.images.length > 0 ? product.images : ["/placeholder-art.svg"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
@@ -134,8 +134,8 @@ export function ProductDetailView({
               </p>
             ) : (
               <div className="mt-4 flex flex-wrap items-center gap-2.5">
-                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#9e8b43]/15 text-[#9e8b43] border border-[#9e8b43]/30">
-                  Commissioned Artwork
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300">
+                  Bespoke Commission
                 </span>
                 <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
                   Private Collection • Not for Direct Sale
@@ -175,7 +175,7 @@ export function ProductDetailView({
             </div>
           )}
 
-          {/* Quantity & Add to Cart Action OR Commission Action */}
+          {/* Action: Quantity & Add to Cart OR Commission Inquiry */}
           {isForSale ? (
             <div className="space-y-4 pt-2">
               <label className="text-sm font-semibold text-zinc-900 dark:text-white block">
@@ -211,16 +211,21 @@ export function ProductDetailView({
               </div>
             </div>
           ) : (
-            <div className="space-y-3 pt-2">
+            <div className="space-y-4 pt-2">
+              <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-sm text-zinc-800 dark:text-zinc-200">
+                <p className="font-semibold text-amber-800 dark:text-amber-300 mb-1">
+                  Commissioned Artwork / Private Collection
+                </p>
+                <p className="text-xs text-zinc-600 dark:text-zinc-400">
+                  This piece was created as an original custom commission. You can request a personalized piece tailored to your vision.
+                </p>
+              </div>
               <Link
-                href={`/commissions?reference=${encodeURIComponent(product.title)}`}
+                href={`/commissions?reference=${encodeURIComponent(product.title)}#commission-calculator`}
                 className="flex items-center justify-center w-full rounded-md bg-[#9e8b43] hover:bg-[#8a7833] text-white px-6 py-3.5 text-base font-bold shadow-md focus:outline-none transition-colors text-center"
               >
                 Commission
               </Link>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center">
-                This artwork was made as a commissioned piece and is not for direct purchase. You can commission a custom artwork inspired by it.
-              </p>
             </div>
           )}
 

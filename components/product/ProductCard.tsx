@@ -22,7 +22,7 @@ type ProductCardProps = {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addItem, currency } = useCart();
-  const imageUrl = product.images?.[0] || "/next.svg";
+  const imageUrl = product.images?.[0] || "/placeholder-art.svg";
   
   // Prado Commerce variants hold the price
   const priceString = product.variants?.[0]?.price || "0";
@@ -62,9 +62,9 @@ export function ProductCard({ product }: ProductCardProps) {
               {formatCurrency(priceNum, currency)}
             </p>
           ) : (
-            <p className="text-xs font-bold uppercase tracking-wider text-[#9e8b43]">
+            <span className="text-xs font-semibold uppercase tracking-wider text-[#9e8b43] dark:text-[#decf92]">
               Commission Piece
-            </p>
+            </span>
           )}
         </div>
       </div>
@@ -87,8 +87,8 @@ export function ProductCard({ product }: ProductCardProps) {
           </button>
         ) : (
           <Link
-            href={`/commissions?reference=${encodeURIComponent(product.title)}`}
-            className="block w-full text-center rounded-md bg-[#9e8b43] hover:bg-[#8a7833] px-4 py-2.5 text-sm font-bold text-white shadow transition-colors"
+            href={`/commissions?reference=${encodeURIComponent(product.title)}#commission-calculator`}
+            className="block text-center w-full rounded-md bg-[#9e8b43] hover:bg-[#8a7833] px-4 py-2.5 text-sm font-bold text-white shadow transition-colors"
           >
             Commission
           </Link>

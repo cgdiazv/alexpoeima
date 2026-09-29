@@ -13,7 +13,18 @@ export const metadata = {
 export default async function FineArtsAndPrintsPage() {
   let products = [];
   try {
-    products = await pradoClient("/api/products");
+    const allProducts = await pradoClient("/api/products");
+    if (Array.isArray(allProducts)) {
+      products = allProducts.filter((product: any) => {
+        const catName = (product.category?.name || product.categoryName || "").toLowerCase().trim();
+        const catId = product.categoryId || product.category?.id;
+        return (
+          catName === "fine arts and prints" ||
+          catName.includes("fine art") ||
+          catId === "cmtuwuyms000204jqqtfbhiuh"
+        );
+      });
+    }
   } catch (error) {
     console.error("Error fetching fine arts products:", error);
   }
