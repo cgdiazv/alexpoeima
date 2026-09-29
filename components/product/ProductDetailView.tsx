@@ -19,6 +19,13 @@ type Product = {
   description?: string;
   images?: string[];
   variants?: Variant[];
+  categoryId?: string;
+  categoryName?: string;
+  category?: {
+    id?: string;
+    name?: string;
+  };
+  isForSale?: boolean;
 };
 
 export function ProductDetailView({
@@ -35,7 +42,19 @@ export function ProductDetailView({
   const activeVariant = product.variants?.[selectedVariantIndex];
   const priceNum = activeVariant ? parseFloat(activeVariant.price) : 0;
 
+  // Determine if artwork is for direct sale or a commission / exhibition piece
+  const isCommissionCategory =
+    (product.categoryName || product.category?.name || "").toLowerCase().includes("commission");
+  const hasVariants = Boolean(product.variants && product.variants.length > 0);
+  const isForSale =
+    !isCommissionCategory &&
+    hasVariants &&
+    !isNaN(priceNum) &&
+    priceNum > 0 &&
+    product.isForSale !== false;
+
   const handleAddToCart = () => {
+    if (!isForSale) return;
     addItem({
       id: product.id,
       name: product.title + (activeVariant?.name ? ` - ${activeVariant.name}` : ""),
@@ -109,13 +128,24 @@ export function ProductDetailView({
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-white">
               {product.title}
             </h1>
-            <p className="text-2xl font-bold text-zinc-900 dark:text-white mt-4">
-              {formatCurrency(priceNum, currency)}
-            </p>
+            {isForSale ? (
+              <p className="text-2xl font-bold text-zinc-900 dark:text-white mt-4">
+                {formatCurrency(priceNum, currency)}
+              </p>
+            ) : (
+              <div className="mt-4 flex flex-wrap items-center gap-2.5">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#9e8b43]/15 text-[#9e8b43] border border-[#9e8b43]/30">
+                  Commissioned Artwork
+                </span>
+                <span className="text-sm font-medium text-zinc-500 dark:text-zinc-400">
+                  Private Collection • Not for Direct Sale
+                </span>
+              </div>
+            )}
           </div>
 
-          {/* Variants Selector */}
-          {product.variants && product.variants.length > 1 && (
+          {/* Variants Selector (Only when product is for sale and has multiple variants) */}
+          {isForSale && product.variants && product.variants.length > 1 && (
             <div className="space-y-3">
               <label className="text-sm font-semibold text-zinc-900 dark:text-white">
                 Option / Variant
@@ -141,44 +171,58 @@ export function ProductDetailView({
           {/* Product Description */}
           {product.description && (
             <div className="prose prose-sm dark:prose-invert text-zinc-600 dark:text-zinc-300 leading-relaxed border-t border-b border-zinc-200 dark:border-zinc-800 py-6">
-              <p>{product.description}</p>
+              <p className="whitespace-pre-line">{product.description}</p>
             </div>
           )}
 
-          {/* Quantity & Add to Cart Action */}
-          <div className="space-y-4 pt-2">
-            <label className="text-sm font-semibold text-zinc-900 dark:text-white block">
-              Quantity
-            </label>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center border border-zinc-300 dark:border-zinc-700 rounded-md">
+          {/* Quantity & Add to Cart Action OR Commission Action */}
+          {isForSale ? (
+            <div className="space-y-4 pt-2">
+              <label className="text-sm font-semibold text-zinc-900 dark:text-white block">
+                Quantity
+              </label>
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center border border-zinc-300 dark:border-zinc-700 rounded-md">
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    className="px-3.5 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                  >
+                    -
+                  </button>
+                  <span className="px-4 py-2 text-sm font-semibold text-zinc-900 dark:text-white">
+                    {quantity}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setQuantity((q) => q + 1)}
+                    className="px-3.5 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                  >
+                    +
+                  </button>
+                </div>
+
                 <button
-                  type="button"
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="px-3.5 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                  onClick={handleAddToCart}
+                  className="flex-1 rounded-md bg-[#9e8b43] hover:bg-[#8a7833] text-white px-6 py-3 text-base font-bold shadow-md focus:outline-none transition-colors"
                 >
-                  -
-                </button>
-                <span className="px-4 py-2 text-sm font-semibold text-zinc-900 dark:text-white">
-                  {quantity}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setQuantity((q) => q + 1)}
-                  className="px-3.5 py-2 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
-                >
-                  +
+                  Add to Cart
                 </button>
               </div>
-
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 rounded-md bg-[#9e8b43] hover:bg-[#8a7833] text-white px-6 py-3 text-base font-bold shadow-md focus:outline-none transition-colors"
-              >
-                Add to Cart
-              </button>
             </div>
-          </div>
+          ) : (
+            <div className="space-y-3 pt-2">
+              <Link
+                href={`/commissions?reference=${encodeURIComponent(product.title)}`}
+                className="flex items-center justify-center w-full rounded-md bg-[#9e8b43] hover:bg-[#8a7833] text-white px-6 py-3.5 text-base font-bold shadow-md focus:outline-none transition-colors text-center"
+              >
+                Commission
+              </Link>
+              <p className="text-xs text-zinc-500 dark:text-zinc-400 text-center">
+                This artwork was made as a commissioned piece and is not for direct purchase. You can commission a custom artwork inspired by it.
+              </p>
+            </div>
+          )}
 
           {/* Assurance badges */}
           <div className="pt-6 grid grid-cols-2 gap-4 text-xs text-zinc-500 dark:text-zinc-400 border-t border-zinc-200 dark:border-zinc-800">

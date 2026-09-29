@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { CheckCircle2, Clock, ShieldCheck, Send, PawPrint, User, Image as ImageIcon, Sparkles, Ruler, Calculator } from "lucide-react";
 
@@ -66,7 +67,10 @@ const PROJECT_TYPES = [
   { id: "Custom Concept", label: "Custom Concept", icon: Ruler, desc: "Unique artistic vision or commercial work" },
 ];
 
-export default function CommissionsPage() {
+function CommissionsContent() {
+  const searchParams = useSearchParams();
+  const reference = searchParams.get("reference") || searchParams.get("piece");
+
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
 
@@ -82,6 +86,20 @@ export default function CommissionsPage() {
     phone: "",
     description: "",
   });
+
+  useEffect(() => {
+    if (reference) {
+      setFormData((prev) => {
+        if (!prev.description) {
+          return {
+            ...prev,
+            description: `I am interested in commissioning a custom piece inspired by "${reference}". `,
+          };
+        }
+        return prev;
+      });
+    }
+  }, [reference]);
 
   // Calculate price dynamically
   const calculatedPricing = useMemo(() => {
@@ -340,7 +358,21 @@ export default function CommissionsPage() {
               </button>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-8">
+            <>
+              {reference && (
+                <div className="mb-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-between text-xs sm:text-sm">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-[#9e8b43] flex-shrink-0" />
+                    <span className="text-zinc-800 dark:text-zinc-200">
+                      Inquiry inspired by piece: <strong className="text-zinc-950 dark:text-white">{reference}</strong>
+                    </span>
+                  </div>
+                  <span className="text-xs uppercase tracking-wider font-bold text-[#9e8b43]">
+                    Custom Piece
+                  </span>
+                </div>
+              )}
+              <form onSubmit={handleSubmit} className="space-y-8">
               {/* 1. Artwork Subject / Type Selection */}
               <div className="space-y-3">
                 <label className="block text-xs font-extrabold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
@@ -549,9 +581,18 @@ export default function CommissionsPage() {
                 {sending ? "Submitting Inquiry..." : `Submit Inquiry (${calculatedPricing.totalPrice > 0 ? `$${calculatedPricing.totalPrice.toLocaleString()} USD` : "Custom Quote"})`}
               </button>
             </form>
+            </>
           )}
         </div>
       </section>
     </main>
+  );
+}
+
+export default function CommissionsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white dark:bg-zinc-950" />}>
+      <CommissionsContent />
+    </Suspense>
   );
 }

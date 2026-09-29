@@ -13,6 +13,10 @@ type ProductCardProps = {
     description?: string;
     images?: string[];
     variants?: { price: string }[];
+    categoryId?: string;
+    categoryName?: string;
+    category?: { id?: string; name?: string };
+    isForSale?: boolean;
   };
 };
 
@@ -22,13 +26,17 @@ export function ProductCard({ product }: ProductCardProps) {
   
   // Prado Commerce variants hold the price
   const priceString = product.variants?.[0]?.price || "0";
-  const priceNum = parseFloat(priceString); // e.g. "1600" -> 1600 (Assuming it's not cents but full amount or cents based on currency)
+  const priceNum = parseFloat(priceString);
 
-  // In the previous conversation we troubleshooted that price was passed as string.
-  // We'll format it assuming it is the exact amount e.g. "1600" is $1600.00
-  // Or if it's cents, we should divide by 100.
-  // We'll format it as standard number.
-  const displayPrice = priceNum; 
+  const isCommissionCategory =
+    (product.categoryName || product.category?.name || "").toLowerCase().includes("commission");
+  const hasVariants = Boolean(product.variants && product.variants.length > 0);
+  const isForSale =
+    !isCommissionCategory &&
+    hasVariants &&
+    !isNaN(priceNum) &&
+    priceNum > 0 &&
+    product.isForSale !== false;
 
   return (
     <div className="group relative flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white dark:border-gray-800 dark:bg-zinc-900 transition-all hover:shadow-lg">
@@ -49,27 +57,42 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.title}
         </h3>
         <div className="flex flex-1 flex-col justify-end mt-2">
-          <p className="text-base font-medium text-gray-900 dark:text-white">
-            {formatCurrency(displayPrice, currency)}
-          </p>
+          {isForSale ? (
+            <p className="text-base font-medium text-gray-900 dark:text-white">
+              {formatCurrency(priceNum, currency)}
+            </p>
+          ) : (
+            <p className="text-xs font-bold uppercase tracking-wider text-[#9e8b43]">
+              Commission Piece
+            </p>
+          )}
         </div>
       </div>
       <div className="px-4 pb-4 z-20 relative">
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            addItem({
-              id: product.id,
-              name: product.title,
-              price: displayPrice,
-              quantity: 1,
-              image: imageUrl,
-            });
-          }}
-          className="w-full rounded-md bg-[#9e8b43] hover:bg-[#8a7833] px-4 py-2.5 text-sm font-bold text-white shadow transition-colors"
-        >
-          Add to Cart
-        </button>
+        {isForSale ? (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              addItem({
+                id: product.id,
+                name: product.title,
+                price: priceNum,
+                quantity: 1,
+                image: imageUrl,
+              });
+            }}
+            className="w-full rounded-md bg-[#9e8b43] hover:bg-[#8a7833] px-4 py-2.5 text-sm font-bold text-white shadow transition-colors"
+          >
+            Add to Cart
+          </button>
+        ) : (
+          <Link
+            href={`/commissions?reference=${encodeURIComponent(product.title)}`}
+            className="block w-full text-center rounded-md bg-[#9e8b43] hover:bg-[#8a7833] px-4 py-2.5 text-sm font-bold text-white shadow transition-colors"
+          >
+            Commission
+          </Link>
+        )}
       </div>
     </div>
   );
