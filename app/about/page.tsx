@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Palette, ArrowRight } from "lucide-react";
 
@@ -10,23 +11,32 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main className="flex-1 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden py-20 md:py-28 border-b border-zinc-200 dark:border-zinc-800 bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-950">
-        <div className="mx-auto max-w-5xl px-6 text-center">
-          <span className="inline-flex items-center px-3.5 py-1 text-xs font-semibold uppercase tracking-widest text-[#9e8b43] bg-[#decf92]/20 rounded-full border border-[#decf92]/50 mb-6">
-            Fine Artist & Visionary
-          </span>
-          <div className="space-y-3 mb-6">
-            <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-wider text-zinc-900 dark:text-zinc-50 leading-tight uppercase">
-              ALEXPOEIMA
-            </h1>
-            <p className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-widest text-[#9e8b43] uppercase">
+      {/* Header Banner */}
+      <section className="relative w-full h-[380px] sm:h-[440px] md:h-[500px] overflow-hidden bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800">
+        {/* unoptimized: Next's optimizer re-encodes this webp incorrectly */}
+        <Image
+          src="/headers/aboutme.webp"
+          alt="About Alexandra Robles | Alexpoeima"
+          fill
+          priority
+          unoptimized
+          className="object-cover object-top"
+          sizes="100vw"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-black/20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/15 to-transparent" />
+        <div className="relative z-10 h-full max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 flex flex-col justify-center items-start">
+          <div className="max-w-2xl text-left space-y-4 sm:space-y-6">
+            <span className="inline-flex items-center px-3.5 py-1.5 rounded-full bg-[#decf92]/20 border border-[#decf92]/50 text-[#f5ebd2] backdrop-blur-md text-xs font-bold uppercase tracking-widest">
+              Fine Artist & Visionary
+            </span>
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-[1.15] drop-shadow-sm uppercase">
               ALEXANDRA ROBLES
+            </h1>
+            <p className="text-sm sm:text-base md:text-lg text-zinc-200/90 font-normal leading-relaxed max-w-xl drop-shadow">
+              Alexpoeima is a word inspired by the Greek word <em className="italic text-white">poiema</em> (POY-EMA), which means God&apos;s work of art in progress. Ephesians 2.10
             </p>
           </div>
-          <p className="text-lg md:text-xl text-zinc-600 dark:text-zinc-400 max-w-3xl mx-auto font-normal leading-relaxed">
-            Alexpoeima is a word inspired by the Greek word <em className="italic text-zinc-800 dark:text-zinc-200">poiema</em> (POY-EMA), which means God&apos;s work of art in progress. Ephesians 2.10
-          </p>
         </div>
       </section>
 

@@ -18,9 +18,10 @@ export async function generateMetadata({
       : null;
 
     if (product) {
+      const dimSuffix = product.dimension ? ` (${product.dimension})` : "";
       return {
-        title: product.title,
-        description: product.description || `View ${product.title} on Alexpoeima Art`,
+        title: `${product.title}${dimSuffix} | Alexpoeima Art`,
+        description: product.description || `View ${product.title}${dimSuffix} on Alexpoeima Art`,
       };
     }
   } catch (error) {
@@ -28,7 +29,7 @@ export async function generateMetadata({
   }
 
   return {
-    title: "Product Detail",
+    title: "Product Detail | Alexpoeima Art",
   };
 }
 
@@ -44,6 +45,13 @@ export default async function ProductDetailPage({
     const products = await pradoClient("/api/products");
     if (Array.isArray(products)) {
       product = products.find((p: any) => p.slug === slug || p.id === slug);
+    }
+    // Fallback: If product was found but dimension is not present, fetch direct product endpoint
+    if (product && !product.dimension && product.id) {
+      const single = await pradoClient(`/api/products/${product.id}`).catch(() => null);
+      if (single?.dimension) {
+        product.dimension = single.dimension;
+      }
     }
   } catch (error) {
     console.error("Error fetching product detail:", error);

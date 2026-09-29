@@ -1,6 +1,14 @@
 // lib/prado.ts
 
-const API_URL = process.env.NEXT_PUBLIC_PRADO_API_URL;
+const getPradoApiUrl = () => {
+  const envUrl = process.env.NEXT_PUBLIC_PRADO_API_URL;
+  if (!envUrl || envUrl.includes("prado-commerce-2yrk3mhd5")) {
+    return "https://pradocommerce.com";
+  }
+  return envUrl.replace(/\/$/, "");
+};
+
+const API_URL = getPradoApiUrl();
 const STORE_ID = process.env.NEXT_PUBLIC_PRADO_STORE_ID;
 
 /**
