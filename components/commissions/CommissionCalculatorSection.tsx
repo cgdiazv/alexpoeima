@@ -38,7 +38,7 @@ const CANVAS_SIZES: CanvasSize[] = [
     inches: '24" × 36"',
     title: "Gallery Statement",
     desc: "Most Popular choice for Home & Human portraits",
-    basePrice: 1200,
+    basePrice: 120,
   },
   {
     id: "36x48",
@@ -507,7 +507,7 @@ function CommissionCalculatorInner() {
               className="w-full py-4 bg-[#9e8b43] hover:bg-[#8a7833] text-white rounded-xl text-sm font-bold transition-all shadow-lg flex items-center justify-center gap-2 disabled:opacity-50"
             >
               <Send className="w-4 h-4" strokeWidth={1} />
-              {sending ? "Submitting Inquiry..." : `Submit Inquiry (${calculatedPricing.totalPrice > 0 ? `$${calculatedPricing.totalPrice.toLocaleString()} USD` : "Custom Quote"})`}
+              {sending ? "Submitting Inquiry..." : "Submit Inquiry"}
             </button>
           </form>
           </>
