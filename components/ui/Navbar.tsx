@@ -58,6 +58,7 @@ export function Navbar() {
     { name: "Commissions", href: "/commissions" },
     { name: "Live Events", href: "/live-events" },
     { name: "Contact", href: "/contact" },
+    { name: "Blog", href: "/blog" },
   ];
 
   return (
