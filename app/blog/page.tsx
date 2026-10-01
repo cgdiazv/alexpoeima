@@ -1,18 +1,36 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BookOpen, Sparkles, Clock, Calendar, ArrowRight } from "lucide-react";
-import { BLOG_POSTS, BLOG_CATEGORIES } from "@/lib/blog";
+import { BLOG_POSTS, BLOG_CATEGORIES, BlogPost } from "@/lib/blog";
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [posts, setPosts] = useState<BlogPost[]>(BLOG_POSTS);
+
+  useEffect(() => {
+    async function loadPosts() {
+      try {
+        const res = await fetch("/api/admin-posts");
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            setPosts(data);
+          }
+        }
+      } catch (err) {
+        console.error("Error loading blog posts:", err);
+      }
+    }
+    loadPosts();
+  }, []);
 
   const filteredPosts =
     selectedCategory === "All"
-      ? BLOG_POSTS
-      : BLOG_POSTS.filter((post) => post.category === selectedCategory);
+      ? posts
+      : posts.filter((post) => post.category === selectedCategory);
 
   return (
     <main className="flex-1 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100">

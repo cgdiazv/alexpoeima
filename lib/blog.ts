@@ -14,9 +14,10 @@ export interface BlogPost {
   readTime: string;
   image: string;
   content: string[];
+  author?: string;
 }
 
-export const BLOG_POSTS: BlogPost[] = [
+export const INITIAL_BLOG_POSTS: BlogPost[] = [
   {
     id: "1",
     slug: "the-meaning-behind-poiema",
@@ -27,6 +28,7 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "March 24, 2026",
     readTime: "4 min read",
     image: "/headers/header-home.webp",
+    author: "Alexandra Robles",
     content: [
       "When people ask about the origin of 'Alexpoeima', the answer lies in an ancient Greek word that shifted my entire perspective on creativity: Poiema (POY-EMA). In Ephesians 2:10, Paul writes: 'For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do.' In the original Greek text, 'handiwork' or 'masterpiece' is Poiema.",
       "The English word 'poem' comes directly from this root. Think of that: we are not an afterthought or an accidental stroke on the canvas. We are a living, breathing poem crafted by the Creator.",
@@ -44,6 +46,7 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "March 12, 2026",
     readTime: "5 min read",
     image: "/headers/header-liveevvents.webp",
+    author: "Alexandra Robles",
     content: [
       "There is an extraordinary energy in the air during a wedding celebration. The nervous excitement before the ceremony, the joy of the first kiss, and the celebration that follows on the dance floor. While photographers capture frozen fractions of a second, a live painting captures the atmosphere, romance, and emotion in textured acrylic.",
       "When I arrive at an event, I set up early to block in the architectural setting, lighting, and ambient colors. As guests arrive and the ceremony begins, I focus on capturing the couple's likeness, posture, and the unique intimacy of the moment.",
@@ -61,6 +64,7 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "February 28, 2026",
     readTime: "6 min read",
     image: "/headers/header-finearts.webp",
+    author: "Alexandra Robles",
     content: [
       "Many art lovers wonder why I specialize primarily in acrylic rather than traditional oils. Acrylics offer an extraordinary versatility: they dry with rich, vibrant pigment retention and allow for rapid layering of glazes, impasto textures, and gold undertones.",
       "In my studio, every piece begins with a deliberate tonal underpainting. This foundational wash dictates how ambient light bounces through subsequent translucent layers. From there, I build up texture using heavy-body acrylics, palette knives, and custom bristle brushes.",
@@ -77,6 +81,7 @@ export const BLOG_POSTS: BlogPost[] = [
     date: "February 14, 2026",
     readTime: "4 min read",
     image: "/headers/header-discover.webp",
+    author: "Alexandra Robles",
     content: [
       "One of the most frequent questions collectors ask is: 'How do I know what canvas size will look best on my wall?' The general rule of interior design is that artwork should span between 60% and 75% of available wall space when hung above furniture like sofas, beds, or console tables.",
       "For cozy reading nooks or single portrait subjects, a 30 × 40 cm (12\" × 16\") or 40 × 50 cm (18\" × 24\") canvas brings warmth without overwhelming the room.",
@@ -85,6 +90,8 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
   },
 ];
+
+export const BLOG_POSTS: BlogPost[] = INITIAL_BLOG_POSTS;
 
 export const BLOG_CATEGORIES: readonly ["All", ...BlogCategory[]] = [
   "All",

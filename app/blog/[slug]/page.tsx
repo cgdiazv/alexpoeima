@@ -13,12 +13,12 @@ import {
   ChevronRight,
   Quote,
 } from "lucide-react";
+import { BlogPost } from "@/lib/blog";
 import {
-  getAllBlogPosts,
-  getBlogPostBySlug,
-  getRelatedBlogPosts,
-  BlogPost,
-} from "@/lib/blog";
+  getAllBlogPostsServer,
+  getBlogPostBySlugServer,
+  getRelatedBlogPostsServer,
+} from "@/lib/blogServer";
 import { BlogShareBar } from "@/components/blog/BlogShareBar";
 
 interface PageProps {
@@ -26,7 +26,7 @@ interface PageProps {
 }
 
 export async function generateStaticParams() {
-  const posts = getAllBlogPosts();
+  const posts = getAllBlogPostsServer();
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -34,7 +34,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = getBlogPostBySlugServer(slug);
 
   if (!post) {
     return {
@@ -64,18 +64,18 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BlogDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = getBlogPostBySlug(slug);
+  const post = getBlogPostBySlugServer(slug);
 
   if (!post) {
     notFound();
   }
 
-  const allPosts = getAllBlogPosts();
+  const allPosts = getAllBlogPostsServer();
   const currentIndex = allPosts.findIndex((p) => p.slug === post.slug);
   const prevPost: BlogPost | null = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
   const nextPost: BlogPost | null =
     currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
-  const relatedPosts = getRelatedBlogPosts(post.slug, 3);
+  const relatedPosts = getRelatedBlogPostsServer(post.slug, 3);
 
   return (
     <main className="flex-1 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 min-h-screen">
