@@ -83,7 +83,7 @@ export function HeaderSlider({ slides = DEFAULT_SLIDES }: { slides?: HeaderSlide
 
     const timer = setInterval(() => {
       nextSlide();
-    }, 5500);
+    }, 3500);
 
     return () => clearInterval(timer);
   }, [nextSlide, isPaused, totalSlides]);

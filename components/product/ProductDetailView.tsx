@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { formatCurrency } from "@/lib/currency";
+import { X, ZoomIn, ChevronLeft, ChevronRight } from "lucide-react";
 
 type Variant = {
   id?: string;
@@ -87,8 +88,39 @@ export function ProductDetailView({
   const { addItem, currency } = useCart();
   const images = product.images && product.images.length > 0 ? product.images : ["/placeholder-art.svg"];
   const [selectedImage, setSelectedImage] = useState(images[0]);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariantIndex, setSelectedVariantIndex] = useState(0);
+
+  // Close lightbox on Escape, navigate with Arrow keys, and lock scroll
+  useEffect(() => {
+    if (!isLightboxOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsLightboxOpen(false);
+      } else if (e.key === "ArrowRight" && images.length > 1) {
+        setSelectedImage((curr) => {
+          const idx = images.indexOf(curr);
+          return images[(idx + 1) % images.length];
+        });
+      } else if (e.key === "ArrowLeft" && images.length > 1) {
+        setSelectedImage((curr) => {
+          const idx = images.indexOf(curr);
+          return images[(idx - 1 + images.length) % images.length];
+        });
+      }
+    };
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isLightboxOpen, images]);
 
   const activeVariant = product.variants?.[selectedVariantIndex];
   const priceNum = activeVariant ? parseFloat(activeVariant.price) : 0;
@@ -138,15 +170,33 @@ export function ProductDetailView({
         
         {/* Left Column: Image Gallery */}
         <div className="space-y-4">
-          <div className="relative w-full aspect-square overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800">
+          <div
+            onClick={() => setIsLightboxOpen(true)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setIsLightboxOpen(true);
+              }
+            }}
+            tabIndex={0}
+            role="button"
+            aria-label={`View full size image of ${product.title}`}
+            title="Click to open full view"
+            className="group relative w-full aspect-square overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 cursor-zoom-in focus:outline-none focus:ring-2 focus:ring-[#9e8b43]"
+          >
             <Image
               src={selectedImage}
               alt={product.title}
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover object-center"
+              className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
             />
+            {/* Subtle Zoom Badge overlay */}
+            <div className="absolute bottom-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/65 hover:bg-black/85 backdrop-blur-md text-white text-xs font-semibold shadow-lg transition-all duration-200 sm:opacity-90 group-hover:opacity-100 group-hover:scale-105">
+              <ZoomIn className="w-3.5 h-3.5 text-[#decf92]" />
+              <span>Full View</span>
+            </div>
           </div>
 
           {/* Thumbnails */}
@@ -369,6 +419,131 @@ export function ProductDetailView({
 
         </div>
       </div>
+
+      {/* Full View Lightbox Modal */}
+      {isLightboxOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Full view of ${product.title}`}
+          onClick={() => setIsLightboxOpen(false)}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/92 backdrop-blur-md p-4 sm:p-6 select-none animate-in fade-in duration-200"
+        >
+          {/* Top Bar with Title, Artwork Info and Close button */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-4 sm:px-8 py-4 bg-gradient-to-b from-black/85 via-black/40 to-transparent text-white"
+          >
+            <div className="flex flex-col min-w-0 pr-4">
+              <span className="font-semibold text-sm sm:text-base truncate">
+                {product.title}
+              </span>
+              {dimensions && (
+                <span className="text-xs text-zinc-300">
+                  {dimensions.summary}
+                </span>
+              )}
+            </div>
+
+            <div className="flex items-center gap-3 shrink-0">
+              {images.length > 1 && (
+                <span className="text-xs sm:text-sm font-medium px-2.5 py-1 rounded-full bg-white/10 text-white/90">
+                  {images.indexOf(selectedImage) + 1} / {images.length}
+                </span>
+              )}
+              <button
+                type="button"
+                onClick={() => setIsLightboxOpen(false)}
+                className="p-2 sm:p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors focus:outline-none focus:ring-2 focus:ring-[#decf92]"
+                aria-label="Close full view"
+              >
+                <X className="w-5 h-5 sm:w-6 sm:h-6" />
+              </button>
+            </div>
+          </div>
+
+          {/* Previous Image Button */}
+          {images.length > 1 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedImage((curr) => {
+                  const idx = images.indexOf(curr);
+                  return images[(idx - 1 + images.length) % images.length];
+                });
+              }}
+              className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-20 p-2.5 sm:p-3.5 rounded-full bg-black/50 hover:bg-black/80 text-white/90 hover:text-white border border-white/20 shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#decf92]"
+              aria-label="Previous image"
+            >
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+          )}
+
+          {/* Image Display */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="relative w-full h-[75vh] sm:h-[82vh] max-w-6xl flex items-center justify-center p-2"
+          >
+            <Image
+              src={selectedImage}
+              alt={product.title}
+              fill
+              sizes="100vw"
+              quality={95}
+              className="object-contain drop-shadow-2xl"
+              priority
+            />
+          </div>
+
+          {/* Next Image Button */}
+          {images.length > 1 && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSelectedImage((curr) => {
+                  const idx = images.indexOf(curr);
+                  return images[(idx + 1) % images.length];
+                });
+              }}
+              className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-20 p-2.5 sm:p-3.5 rounded-full bg-black/50 hover:bg-black/80 text-white/90 hover:text-white border border-white/20 shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#decf92]"
+              aria-label="Next image"
+            >
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+          )}
+
+          {/* Bottom Thumbnails navigation strip in full view */}
+          {images.length > 1 && (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10 max-w-[90vw] overflow-x-auto shadow-xl"
+            >
+              {images.map((img, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => setSelectedImage(img)}
+                  className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-md overflow-hidden border-2 transition-all shrink-0 ${
+                    selectedImage === img
+                      ? "border-[#decf92] scale-105"
+                      : "border-transparent opacity-60 hover:opacity-100"
+                  }`}
+                  aria-label={`View image ${idx + 1}`}
+                >
+                  <Image
+                    src={img}
+                    alt=""
+                    fill
+                    className="object-cover"
+                  />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

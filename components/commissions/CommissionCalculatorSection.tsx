@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { CheckCircle2, Clock, ShieldCheck, Send, PawPrint, User, Image as ImageIcon, Sparkles, Ruler, Calculator } from "lucide-react";
+import { CheckCircle2, Clock, ShieldCheck, Send, PawPrint, User, Image as ImageIcon, Sparkles, Ruler, Calculator, Mail, ArrowRight } from "lucide-react";
 
 interface CanvasSize {
   id: string;
@@ -66,6 +66,9 @@ const PROJECT_TYPES = [
   { id: "Custom Concept", label: "Custom Concept", icon: Ruler, desc: "Unique artistic vision or commercial work" },
 ];
 
+const ACCESS_STORAGE_KEY = "alexpoeima_commissions_calculator_unlocked";
+const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+
 function CommissionCalculatorInner() {
   const searchParams = useSearchParams();
   const reference = searchParams.get("reference") || searchParams.get("piece");
@@ -85,6 +88,88 @@ function CommissionCalculatorInner() {
     phone: "",
     description: "",
   });
+
+  const [isUnlocked, setIsUnlocked] = useState(false);
+  const [hasCheckedStorage, setHasCheckedStorage] = useState(false);
+  const [gateEmail, setGateEmail] = useState("");
+  const [gateError, setGateError] = useState("");
+
+  // Restore active session for at least 7 days from localStorage
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(ACCESS_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed?.expiresAt && Date.now() < parsed.expiresAt) {
+          setIsUnlocked(true);
+          if (parsed.email) {
+            setFormData((prev) => ({ ...prev, email: parsed.email }));
+            setGateEmail(parsed.email);
+          }
+        } else {
+          localStorage.removeItem(ACCESS_STORAGE_KEY);
+        }
+      }
+    } catch {
+      // Ignore storage errors (e.g. cookies/localStorage blocked)
+    } finally {
+      setHasCheckedStorage(true);
+    }
+  }, []);
+
+  const handleUnlock = (e: React.FormEvent) => {
+    e.preventDefault();
+    const trimmed = gateEmail.trim();
+    if (!trimmed || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) {
+      setGateError("Please enter a valid email address");
+      return;
+    }
+    setFormData((prev) => ({ ...prev, email: trimmed }));
+    setGateError("");
+    setIsUnlocked(true);
+
+    // Save session in localStorage for 7 days
+    try {
+      const now = Date.now();
+      const payload = {
+        email: trimmed,
+        unlockedAt: now,
+        expiresAt: now + SEVEN_DAYS_MS,
+      };
+      localStorage.setItem(ACCESS_STORAGE_KEY, JSON.stringify(payload));
+    } catch {
+      // Ignore storage errors
+    }
+
+    // Send the captured lead email to admin
+    fetch("/api/send-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to: "alexandra.robles@alexpoeima.com",
+        replyTo: trimmed,
+        subject: `[New Lead] Commissions Calculator Access - ${trimmed}`,
+        html: `
+          <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; color: #18181b; background-color: #ffffff;">
+            <h2 style="color: #9e8b43; margin-top: 0;">New Commission Lead Captured</h2>
+            <p>A prospective client has entered their email to access the Commissions Calculator on <strong>alexpoeima.com</strong>:</p>
+            
+            <div style="background-color: #f4f4f5; padding: 16px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #9e8b43;">
+              <p style="margin: 4px 0; font-size: 15px;"><strong>Entered Email:</strong> <a href="mailto:${trimmed}" style="color: #9e8b43; text-decoration: none; font-weight: bold;">${trimmed}</a></p>
+              <p style="margin: 4px 0; font-size: 13px; color: #71717a;"><strong>Date & Time:</strong> ${new Date().toLocaleString()}</p>
+              ${reference ? `<p style="margin: 4px 0; font-size: 13px; color: #71717a;"><strong>Artwork Reference:</strong> ${reference}</p>` : ""}
+            </div>
+            
+            <p style="font-size: 13px; color: #52525b;">The user is currently reviewing canvas options and estimated pricing in the calculator.</p>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 24px 0;" />
+            <p style="font-size: 12px; color: #a1a1aa;">Notification from Alexpoeima Art Commissions Platform</p>
+          </div>
+        `,
+      }),
+    }).catch((err) => {
+      console.error("Failed to send admin notification for calculator lead:", err);
+    });
+  };
 
   useEffect(() => {
     if (reference) {
@@ -160,7 +245,7 @@ function CommissionCalculatorInner() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          to: ["alexpoeima@gmail.com", formData.email],
+          to: ["alexandra.robles@alexpoeima.com", "alexpoeima@gmail.com", formData.email],
           subject: `[Commission Request] ${projectType}${petDetail} - ${sizeText} - ${formData.name}`,
           replyTo: formData.email,
           html: `
@@ -175,6 +260,7 @@ function CommissionCalculatorInner() {
                 <hr style="border: 0; border-top: 1px solid #e4e4e7; margin: 12px 0;" />
                 <p style="margin: 4px 0;"><strong>Artwork Type:</strong> ${projectType}${petDetail}</p>
                 <p style="margin: 4px 0;"><strong>Canvas Dimensions:</strong> ${sizeText}</p>
+                <p style="margin: 4px 0;"><strong>Medium:</strong> Acrylic on Canvas</p>
                 <p style="margin: 4px 0; font-size: 16px; color: #b45309;"><strong>Estimated Price:</strong> ${priceText}</p>
               </div>
               
@@ -196,8 +282,72 @@ function CommissionCalculatorInner() {
     }
   };
 
+  if (!hasCheckedStorage) {
+    return (
+      <section id="commission-calculator" className="py-24 max-w-4xl mx-auto px-6 text-center">
+        <div className="inline-block w-7 h-7 border-2 border-[#9e8b43] border-t-transparent rounded-full animate-spin" />
+      </section>
+    );
+  }
+
+  if (!isUnlocked) {
+    return (
+      <section id="commission-calculator" className="py-16 md:py-24 max-w-4xl mx-auto px-6">
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-zinc-50 to-white dark:from-zinc-900 dark:to-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xl p-8 sm:p-12 md:p-16 text-center space-y-6">
+          <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-[#9e8b43] dark:text-[#decf92] mx-auto shadow-sm">
+            <Calculator className="w-7 h-7 sm:w-8 sm:h-8" strokeWidth={1.5} />
+          </div>
+
+          <div className="max-w-xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#9e8b43] block">
+              Custom Artwork Commission
+            </span>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-zinc-900 dark:text-white tracking-tight">
+              Commission Calculator
+            </h2>
+            <p className="text-base sm:text-lg text-zinc-600 dark:text-zinc-300 font-medium leading-relaxed">
+              Enter your email and commission your order, choose size, media, and receive an estimated price overview.
+            </p>
+          </div>
+
+          <form onSubmit={handleUnlock} className="max-w-md mx-auto pt-2 space-y-3">
+            <div className="relative flex flex-col sm:flex-row gap-3">
+              <div className="relative flex-1">
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
+                <input
+                  type="email"
+                  required
+                  value={gateEmail}
+                  onChange={(e) => {
+                    setGateEmail(e.target.value);
+                    if (gateError) setGateError("");
+                  }}
+                  placeholder="Enter your email address..."
+                  className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-white placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-[#9e8b43] text-sm shadow-sm"
+                />
+              </div>
+              <button
+                type="submit"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#9e8b43] hover:bg-[#8a7833] text-white text-sm font-bold shadow-md hover:shadow-lg transition-all focus:outline-none focus:ring-2 focus:ring-[#decf92] shrink-0 cursor-pointer"
+              >
+                <span>View Calculator</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+            {gateError && (
+              <p className="text-xs text-red-500 font-medium">{gateError}</p>
+            )}
+            <p className="text-xs text-zinc-400 dark:text-zinc-500">
+              No obligation • Instant pricing calculation • Private & secure
+            </p>
+          </form>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section id="commission-calculator" className="py-16 md:py-24 max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    <section id="commission-calculator" className="py-16 md:py-24 max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start animate-in fade-in duration-300">
       {/* Left Column: Guarantees & Pricing Calculator Breakdown */}
       <div className="lg:col-span-5 space-y-8">
         <div>
@@ -229,6 +379,10 @@ function CommissionCalculatorInner() {
                 <strong className="font-semibold text-zinc-900 dark:text-zinc-100">{petCount} Pet{petCount !== "1" ? "s" : ""}</strong>
               </div>
             )}
+            <div className="flex justify-between">
+              <span>Medium:</span>
+              <strong className="font-semibold text-zinc-900 dark:text-zinc-100">Acrylic</strong>
+            </div>
             {calculatedPricing.petSurcharge > 0 && (
               <div className="flex justify-between text-xs text-amber-700 dark:text-amber-300">
                 <span>Additional Pet Fee:</span>
@@ -253,7 +407,7 @@ function CommissionCalculatorInner() {
             <Clock className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
             <div>
               <strong className="block text-zinc-900 dark:text-zinc-100">Typical Lead Time</strong>
-              <span className="text-zinc-600 dark:text-zinc-400">3 to 6 weeks depending on size and drying schedule.</span>
+              <span className="text-zinc-600 dark:text-zinc-400">2 weeks depending on size and drying schedule, plus shipping time.</span>
             </div>
           </div>
 
@@ -261,7 +415,7 @@ function CommissionCalculatorInner() {
             <ShieldCheck className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
             <div>
               <strong className="block text-zinc-900 dark:text-zinc-100">50/50 Payment Terms</strong>
-              <span className="text-zinc-600 dark:text-zinc-400">50% deposit upon sketch approval, remaining 50% prior to final delivery.</span>
+              <span className="text-zinc-600 dark:text-zinc-400">50% Deposit to begin painting, remaining 50% prior to delivery.</span>
             </div>
           </div>
         </div>
