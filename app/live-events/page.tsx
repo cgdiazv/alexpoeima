@@ -26,7 +26,7 @@ export default function LiveEventsPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          to: ["alexpoeima@gmail.com", eventData.email],
+          to: ["alexandra.robles@alexpoeima.com", "alexpoeima@gmail.com", eventData.email],
           subject: `[Live Event Booking] ${eventData.eventType} - ${eventData.name}`,
           replyTo: eventData.email,
           html: `
@@ -135,7 +135,7 @@ export default function LiveEventsPage() {
               </li>
               <li className="flex items-start gap-3 text-sm text-zinc-700 dark:text-zinc-300">
                 <CheckCircle2 className="w-5 h-5 text-[#9e8b43] dark:text-[#decf92] flex-shrink-0 mt-0.5" strokeWidth={1} />
-                <span><strong>5-8 Hours Live Painting:</strong> Alex sets up early and paints live throughout your ceremony & reception.</span>
+                <span><strong>2-4 Hours Live Painting:</strong> Alex sets up early and paints live throughout your ceremony & reception.</span>
               </li>
               <li className="flex items-start gap-3 text-sm text-zinc-700 dark:text-zinc-300">
                 <CheckCircle2 className="w-5 h-5 text-[#9e8b43] dark:text-[#decf92] flex-shrink-0 mt-0.5" strokeWidth={1} />
@@ -143,7 +143,7 @@ export default function LiveEventsPage() {
               </li>
               <li className="flex items-start gap-3 text-sm text-zinc-700 dark:text-zinc-300">
                 <CheckCircle2 className="w-5 h-5 text-[#9e8b43] dark:text-[#decf92] flex-shrink-0 mt-0.5" strokeWidth={1} />
-                <span><strong>Studio Touch-ups & Framing:</strong> Studio refinement, protective varnish seal, and ready-to-hang delivery.</span>
+                <span><strong>Studio Touch-ups:</strong> Studio refinement, protective varnish seal, and 2-3 Weeks of delivery.</span>
               </li>
             </ul>
           </div>
@@ -232,7 +232,7 @@ export default function LiveEventsPage() {
                   disabled={sending}
                   className="w-full py-3 bg-[#9e8b43] hover:bg-[#8a7833] text-white font-semibold text-sm rounded-lg shadow-md transition-colors disabled:opacity-50"
                 >
-                  {sending ? "Checking Availability..." : "Check Date Availability"}
+                  {sending ? "Submitting Request..." : "Submit your request"}
                 </button>
               </form>
             )}
