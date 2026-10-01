@@ -38,7 +38,7 @@ const CANVAS_SIZES: CanvasSize[] = [
     inches: '24" × 36"',
     title: "Gallery Statement",
     desc: "Most Popular choice for Home & Human portraits",
-    basePrice: 120,
+    basePrice: 200,
   },
   {
     id: "36x48",
@@ -209,8 +209,8 @@ function CommissionCalculatorInner() {
     // Additional pet surcharge if pet portrait
     let petSurcharge = 0;
     if (projectType === "Pet Portrait") {
-      if (petCount === "2") petSurcharge = 150;
-      if (petCount === "3+") petSurcharge = 300;
+      if (petCount === "2") petSurcharge = 50;
+      if (petCount === "3+") petSurcharge = 150;
     }
 
     const totalPrice = price > 0 ? price + petSurcharge : 0;
@@ -492,8 +492,8 @@ function CommissionCalculatorInner() {
                   <div className="flex gap-3">
                     {[
                       { value: "1", label: "1 Pet (Included)" },
-                      { value: "2", label: "2 Pets (+$150)" },
-                      { value: "3+", label: "3+ Pets (+$300)" },
+                      { value: "2", label: "2 Pets (+$50)" },
+                      { value: "3+", label: "3+ Pets (+$150)" },
                     ].map((opt) => (
                       <button
                         key={opt.value}
