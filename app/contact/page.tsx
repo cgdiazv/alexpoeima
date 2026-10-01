@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle2 } from "lucide-react";
+import { Mail, Clock, Send, CheckCircle2 } from "lucide-react";
 
 export default function ContactPage() {
   const [submitted, setSubmitted] = useState(false);
@@ -114,14 +114,6 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-sm font-semibold">Studio Hours</h3>
                 <p className="text-sm text-zinc-600 dark:text-zinc-400">Monday – Friday: 9:00 AM – 6:00 PM</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-4 p-4 rounded-xl bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
-              <MapPin className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-1 flex-shrink-0" />
-              <div>
-                <h3 className="text-sm font-semibold">Art Studio Location</h3>
-                <p className="text-sm text-zinc-600 dark:text-zinc-400">Private Studio visits by appointment only.</p>
               </div>
             </div>
           </div>
